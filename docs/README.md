@@ -15,7 +15,7 @@ Toda la documentación vive en el repositorio, en Markdown, y se versiona junto 
 
 | Documento | Contenido | Estado |
 |---|---|---|
-| [architecture.md](architecture.md) | Stack, módulos, estructura de carpetas | ⏳ Pendiente |
+| [architecture.md](architecture.md) | Stack, módulos, estructura de carpetas | ✅ Escrito |
 | [domain-model.md](domain-model.md) | Entidades, relaciones y reglas de negocio | ⏳ Pendiente |
 | [api-reference.md](api-reference.md) | Endpoints del backend | ⏳ Pendiente |
 | [database.md](database.md) | Esquema, índices y migraciones | ⏳ Pendiente |
