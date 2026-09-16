@@ -68,7 +68,7 @@ public class DashboarService {
         }
 
         for (Expense expense : allExpenses) {
-            totalExpenses = totalExpenses.add(BigDecimal.valueOf(expense.getAmount()));
+            totalExpenses = totalExpenses.add(expense.getAmount());
         }
 
         return totalIncome.subtract(totalCost.add(totalExpenses));
@@ -99,7 +99,7 @@ public class DashboarService {
         }
 
         for (Expense expense : expenses) {
-            totalExpenses = totalExpenses.add(BigDecimal.valueOf(expense.getAmount()));
+            totalExpenses = totalExpenses.add(expense.getAmount());
         }
 
         return totalIncome.subtract(totalCost.add(totalExpenses));
@@ -126,7 +126,7 @@ public class DashboarService {
         }
 
         for (Expense expense : allExpenses) {
-            totalCost = totalCost.add(BigDecimal.valueOf(expense.getAmount()));
+            totalCost = totalCost.add(expense.getAmount());
         }
 
         if (totalIncome.compareTo(BigDecimal.ZERO) == 0) {
@@ -333,7 +333,7 @@ public class DashboarService {
             }
 
             for (Expense expense : expenses) {
-                monthlyExpenses = monthlyExpenses.add(BigDecimal.valueOf(expense.getAmount()));
+                monthlyExpenses = monthlyExpenses.add(expense.getAmount());
             }
 
             BigDecimal totalCost = productCost.add(monthlyExpenses);

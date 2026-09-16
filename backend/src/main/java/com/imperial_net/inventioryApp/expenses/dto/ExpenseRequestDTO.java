@@ -1,5 +1,6 @@
 package com.imperial_net.inventioryApp.expenses.dto;
 
+import java.math.BigDecimal;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
@@ -27,7 +28,7 @@ public class ExpenseRequestDTO {
      */
     @NotNull(message = "El monto es obligatorio.")
     @Positive(message = "El monto debe ser un valor positivo.")
-    private Double amount;
+    private BigDecimal amount;
 
     /**
      * Método de pago utilizado (efectivo, tarjeta, transferencia, etc.).

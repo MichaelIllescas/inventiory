@@ -8,6 +8,7 @@ import com.imperial_net.inventioryApp.users.dto.UserRequestDTO;
 import com.imperial_net.inventioryApp.exceptions.UserRegisterException;
 import com.imperial_net.inventioryApp.users.model.ResetToken;
 import com.imperial_net.inventioryApp.users.model.Role;
+import com.imperial_net.inventioryApp.suscriptions.model.Subscription;
 import com.imperial_net.inventioryApp.users.model.User;
 import com.imperial_net.inventioryApp.users.repository.ResetTokenRepository;
 import com.imperial_net.inventioryApp.users.repository.UserRepository;
@@ -54,6 +55,7 @@ public class UserService {
                     .email("admin@admin.com")
                     .password(passwordEncoder.encode("admin"))
                     .role(Role.ADMIN)
+                    .subscription(Subscription.PRO)
                     .enabled(true)
                     .build();
             userRepository.save(admin);

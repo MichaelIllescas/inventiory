@@ -1,5 +1,6 @@
 package com.imperial_net.inventioryApp.expenses.dto;
 
+import java.math.BigDecimal;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,7 +38,7 @@ public class ExpenseResponseDTO {
         /**
          * Monto total del gasto.
          */
-        private Double amount;
+        private BigDecimal amount;
 
         /**
          * Método de pago utilizado (efectivo, tarjeta, etc.).

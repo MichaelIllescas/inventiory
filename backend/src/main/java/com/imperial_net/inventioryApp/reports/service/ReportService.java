@@ -140,7 +140,7 @@ public class ReportService {
         }
 
         for (Expense expense : expenses) {
-            totalExpenses = totalExpenses.add(BigDecimal.valueOf(expense.getAmount()));
+            totalExpenses = totalExpenses.add(expense.getAmount());
         }
 
         BigDecimal totalCosts = totalProductCost.add(totalExpenses);
@@ -178,7 +178,7 @@ public class ReportService {
             }
 
             for (Expense expense : quarterlyExpenses) {
-                quarterExpenses = quarterExpenses.add(BigDecimal.valueOf(expense.getAmount()));
+                quarterExpenses = quarterExpenses.add(expense.getAmount());
             }
 
             BigDecimal quarterTotalCosts = quarterProductCost.add(quarterExpenses);

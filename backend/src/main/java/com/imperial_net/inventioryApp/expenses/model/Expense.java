@@ -1,5 +1,6 @@
 package com.imperial_net.inventioryApp.expenses.model;
 
+import java.math.BigDecimal;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.imperial_net.inventioryApp.users.model.User;
 import jakarta.persistence.*;
@@ -48,8 +49,8 @@ public class Expense {
      */
     @NotNull(message = "El monto es obligatorio.")
     @Positive(message = "El monto debe ser un valor positivo.")
-    @Column(nullable = false)
-    private Double amount;
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal amount;
 
     /**
      * Método de pago utilizado (ej. efectivo, tarjeta, transferencia).
