@@ -26,13 +26,13 @@ const Footer = () => {
             <h3 className="app-footer__title">Legales</h3>
             <ul className="app-footer__list">
               <li>
-                <Link to="/legalTerms" className="app-footer__link">
+                <Link to="/terminos" className="app-footer__link">
                   <FileText size={16} aria-hidden="true" />
                   Términos y condiciones
                 </Link>
               </li>
               <li>
-                <Link to="/legalTerms" className="app-footer__link">
+                <Link to="/privacidad" className="app-footer__link">
                   <ShieldCheck size={16} aria-hidden="true" />
                   Política de privacidad
                 </Link>

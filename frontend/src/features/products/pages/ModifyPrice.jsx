@@ -67,7 +67,7 @@ const ModifyPrice = () => {
           <Select
             options={products.map((product) => ({
               value: product.id,
-              label: `${product.name} (Código: ${product.code})`,
+              label: product.code ? `${product.name} (Código: ${product.code})` : product.name,
             }))}
             onChange={(options) => setSelectedProducts(options || [])}
             isMulti

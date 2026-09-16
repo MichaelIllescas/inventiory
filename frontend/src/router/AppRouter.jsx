@@ -1,8 +1,7 @@
-import { Routes, Route } from "react-router-dom";
+import { lazy, Suspense } from "react";
+import { Navigate, Routes, Route } from "react-router-dom";
 import { LoginPage } from "../features/auth/pages/LoginPage";
 import  Dashboard  from "../features/dashboard/pages/Dashboard";
-import  UsersPage  from "../features/users/pages/UsersPage";
-import  RegisterForm  from "../features/users/pages/RegisterForm";
 import { ProtectedRoute } from "./ProtectedRoute";
 import ProviderRegister from "../features/providers/pages/ProviderRegister";
 import ProvidersPage from "../features/providers/pages/ProvidersPage";
@@ -21,29 +20,40 @@ import MonthlyIncomePage from "../features/reports/pages/MonthlyIncomePage";
 import AnnualIncomePage from "../features/reports/pages/AnnualIncomePage";
 import TopCustomersPage from "../features/reports/pages/TopCustomersPage";
 import TopSellingProductsPage from "../features/reports/pages/TopSellingProductsPage";
+import InventoryAnalysisPage from "../features/reports/pages/InventoryAnalysisPage";
 import ProfitabilityPage from "../features/reports/pages/ProfitabilityPage";
-import ChangePassword from "../features/users/pages/changePassword";
-import PerfilManagemetnTabs from "../features/users/pages/PerfilManagementTabs";
+import ExpenseAnalysisPage from "../features/reports/pages/ExpenseAnalysisPage";
 import ForgotPassword from "../components/ForgotPassword";
 import ResetPassword from "../components/ResetPassword";
+import { LoadingScreen } from "../components/LoadingScreen";
 import { useAuth } from "../../src/contexts/AuthContext";
-import LandingPage from "../features/landing/pages/LandingPage";
 import LegalLayout from "../features/landing/components/LegalLayout";
-import RegisterFreeTrial from "../features/landing/components/RegisterFreeTrial";
+import TermsPage from "../features/landing/components/TermsPage";
+import PrivacyPage from "../features/landing/components/PrivacyPage";
 import RegisterFreeTrialPage from "../features/landing/pages/RegisterFreeTrialPage";
-import RegisterPlanPro from "../features/landing/pages/RegisterPlanProPage";
 import RegisterPlanProPage from "../features/landing/pages/RegisterPlanProPage";
+
+const UsersPage = lazy(() => import("../features/users/pages/UsersPage"));
+const RegisterForm = lazy(() => import("../features/users/pages/RegisterForm"));
+const ChangePassword = lazy(() => import("../features/users/pages/changePassword"));
+const PerfilManagemetnTabs = lazy(() =>
+  import("../features/users/pages/PerfilManagementTabs")
+);
 
 export const AppRoutes = () => {
   const { user } = useAuth();
   const role = user?.roles?.[0]?.authority;
   return (
-    <Routes>
+    <Suspense fallback={<LoadingScreen />}>
+      <Routes>
       {/* Ruta pública para el login */}
       <Route path="/login" element={<LoginPage />} />
-      {/* Ruta pública para landing page */}
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/legalTerms" element={<LegalLayout />} />
+      <Route path="/" element={<Navigate to="/login" replace />} />
+      {/* Legales: cada documento con su propia ruta y enlace compartible */}
+      <Route path="/terminos" element={<LegalLayout><TermsPage /></LegalLayout>} />
+      <Route path="/privacidad" element={<LegalLayout><PrivacyPage /></LegalLayout>} />
+      {/* Ruta anterior, se mantiene para no romper enlaces ya publicados */}
+      <Route path="/legalTerms" element={<Navigate to="/terminos" replace />} />
       <Route path="/registerFreeTrial" element={<RegisterFreeTrialPage />} />
       <Route path="/registerPro" element={<RegisterPlanProPage />} />
       
@@ -79,7 +89,9 @@ export const AppRoutes = () => {
         <Route path="/anualIncome" element={<ProtectedRoute element={<AnnualIncomePage/>} />} />
         <Route path="/topCustomers" element={<ProtectedRoute element={<TopCustomersPage/>} />} />
         <Route path="/topProducts" element={<ProtectedRoute element={<TopSellingProductsPage/>} />} />
+        <Route path="/inventoryAnalysis" element={<ProtectedRoute element={<InventoryAnalysisPage/>} />} />
         <Route path="/profiability" element={<ProtectedRoute element={<ProfitabilityPage/>} />} />
+        <Route path="/expenseAnalysis" element={<ProtectedRoute element={<ExpenseAnalysisPage/>} />} />
         <Route path="/changePassword" element={<ProtectedRoute element={<ChangePassword/>} />} />
         <Route path="/configuration" element={<ProtectedRoute element={<PerfilManagemetnTabs/>} />} />
 
@@ -89,6 +101,7 @@ export const AppRoutes = () => {
       <Route path="*" element={<LoginPage />} />
       <Route path="/forgotPassword" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
-    </Routes>
+      </Routes>
+    </Suspense>
   );
 };

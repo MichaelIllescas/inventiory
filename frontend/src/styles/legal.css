@@ -1,0 +1,246 @@
+/* ==========================================================================
+   Páginas legales (Términos y Condiciones / Política de Privacidad)
+   Documentos de lectura larga: prioridad absoluta a la legibilidad.
+   ========================================================================== */
+
+.legal-page {
+  /* Capa sólida que apaga el patrón decorativo del fondo del sitio:
+     un texto contractual tiene que leerse, no competir con la ilustración. */
+  background: #090b11;
+  min-height: 100vh;
+  padding: 3rem 1rem 4rem;
+}
+
+/* --- Barra superior propia, sin la navegación de la landing --- */
+.legal-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(9, 11, 17, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.legal-topbar__inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0.85rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.legal-topbar__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.legal-topbar__brand img {
+  width: 34px;
+  height: 34px;
+}
+
+.legal-topbar__back {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 0.92rem;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.legal-topbar__back:hover,
+.legal-topbar__back:focus-visible {
+  color: #fff;
+  border-color: rgba(52, 211, 153, 0.6);
+  background: rgba(52, 211, 153, 0.1);
+}
+
+/* --- Hoja del documento --- */
+.legal-doc {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 3.25rem);
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.02rem;
+  line-height: 1.85;
+}
+
+/* El Container de Bootstrap que traen las páginas no debe volver a limitar
+   ni a centrar: la hoja ya define el ancho de lectura. */
+.legal-doc .container {
+  max-width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.legal-doc p {
+  margin-bottom: 1.1rem;
+  text-wrap: pretty;
+}
+
+/* Título del documento */
+.legal-doc h4 {
+  color: #fff;
+  font-size: clamp(1.6rem, 3.5vw, 2.1rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.75rem;
+}
+
+.legal-doc hr {
+  border-color: rgba(255, 255, 255, 0.14);
+  opacity: 1;
+  margin: 1.25rem 0 1.5rem;
+}
+
+/* Títulos de cláusula */
+.legal-doc h5 {
+  color: #fff;
+  font-size: 1.16rem;
+  font-weight: 650;
+  line-height: 1.45;
+  margin-top: 2.75rem;
+  margin-bottom: 0.9rem;
+  padding-left: 0.85rem;
+  border-left: 3px solid #34d399;
+  scroll-margin-top: 6rem;
+}
+
+/* Listas */
+.legal-doc ul {
+  padding-left: 1.35rem;
+  margin-bottom: 1.25rem;
+}
+
+.legal-doc li {
+  margin-bottom: 0.65rem;
+}
+
+.legal-doc li::marker {
+  color: rgba(52, 211, 153, 0.85);
+}
+
+.legal-doc strong {
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Enlaces: legibles sobre fondo oscuro, sin el azul por defecto del navegador */
+.legal-doc a {
+  color: #5eead4;
+  text-decoration-color: rgba(94, 234, 212, 0.45);
+  text-underline-offset: 3px;
+}
+
+.legal-doc a:hover,
+.legal-doc a:focus-visible {
+  color: #99f6e4;
+  text-decoration-color: currentColor;
+}
+
+/* Ficha de identificación del prestador / responsable */
+.legal-doc dl.row {
+  margin: 0;
+}
+
+.legal-doc dl.row dt {
+  color: rgba(255, 255, 255, 0.62);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-top: 0.15rem;
+}
+
+.legal-doc dl.row dd {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* Leyendas legales obligatorias */
+.legal-doc blockquote {
+  margin: 1.5rem 0;
+  padding: 1.1rem 1.35rem;
+  background: rgba(52, 211, 153, 0.07);
+  border-left: 3px solid #34d399 !important;
+  border-radius: 0 10px 10px 0;
+  font-size: 0.97rem;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.legal-doc blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 575.98px) {
+  .legal-page {
+    padding: 1.5rem 0.75rem 3rem;
+  }
+
+  .legal-doc {
+    font-size: 1rem;
+    line-height: 1.75;
+    border-radius: 14px;
+  }
+}
+
+/* --- Impresión / guardado en PDF: el usuario tiene derecho a conservar
+       una copia del contrato (art. 1106 CCyCN). --- */
+@media print {
+  .legal-topbar,
+  .app-footer,
+  footer {
+    display: none !important;
+  }
+
+  .legal-page {
+    background: #fff;
+    padding: 0;
+  }
+
+  .legal-doc {
+    max-width: none;
+    background: #fff;
+    color: #000;
+    border: 0;
+    box-shadow: none;
+    font-size: 11pt;
+    line-height: 1.5;
+  }
+
+  .legal-doc h4,
+  .legal-doc h5,
+  .legal-doc strong,
+  .legal-doc dl.row dd {
+    color: #000;
+  }
+
+  .legal-doc h5 {
+    border-left-color: #000;
+    page-break-after: avoid;
+  }
+
+  .legal-doc a {
+    color: #000;
+  }
+
+  .legal-doc blockquote {
+    background: #f2f2f2;
+    border-left-color: #000 !important;
+    color: #000;
+    page-break-inside: avoid;
+  }
+}

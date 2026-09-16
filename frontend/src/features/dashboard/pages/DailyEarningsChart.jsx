@@ -11,6 +11,7 @@ import {
 import React from "react";
 import dayjs from "dayjs";
 import "dayjs/locale/es";
+import { TrendingUp } from "lucide-react";
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend);
 
@@ -51,7 +52,7 @@ const DailyEarningsChart = ({ prod }) => {
 
   return (
     <div className="card p-3">
-      <h4 className="text-center">📈 Ganancias Diarias por ventas (últimos 7 días)</h4>
+      <h4 className="text-center d-flex align-items-center justify-content-center gap-2"><TrendingUp size={20} strokeWidth={1.75} /> Ganancias Diarias por ventas (últimos 7 días)</h4>
       <h6 className="text-center">(ventas-costos)</h6>
       <div style={{ height: "300px" }}>
         <Line data={data} options={options} />

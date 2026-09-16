@@ -3,7 +3,7 @@ import { ChevronDown } from "lucide-react";
 
 import "../styles/nav.css";
 
-const NavbarDropdown = ({ text, icon: Icon, children, dropdownId }) => {
+const NavbarDropdown = ({ text, icon: Icon, children, dropdownId, menuClassName = "" }) => {
   return (
     <li className="nav-item dropdown" id={dropdownId}>
       <a
@@ -15,7 +15,7 @@ const NavbarDropdown = ({ text, icon: Icon, children, dropdownId }) => {
         {Icon && <Icon className="me-2" size={20} />}
         {text}
       </a>
-      <ul className="dropdown-menu ul-dropdown" data-bs-auto-close="outside">{children}</ul>
+      <ul className={`dropdown-menu ul-dropdown ${menuClassName}`.trim()} data-bs-auto-close="outside">{children}</ul>
     </li>
   );
 };

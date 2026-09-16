@@ -3,6 +3,7 @@ package com.imperial_net.inventioryApp.reports.service;
 import com.imperial_net.inventioryApp.exceptions.ProductException;
 import com.imperial_net.inventioryApp.expenses.model.Expense;
 import com.imperial_net.inventioryApp.expenses.repository.ExpenseRepository;
+import com.imperial_net.inventioryApp.expenses.service.ExpenseService;
 import com.imperial_net.inventioryApp.reports.dto.*;
 import com.imperial_net.inventioryApp.sales.model.Sale;
 import com.imperial_net.inventioryApp.sales.model.SaleDetail;
@@ -19,6 +20,9 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.LinkedHashMap;
+import java.util.Comparator;
 import java.util.stream.Collectors;
 
 /**
@@ -32,6 +36,7 @@ public class ReportService {
     private final SaleRepository saleRepository;
     private final SaleDetailRepository saleDetailRepository;
     private final ExpenseRepository expenseRepository;
+    private final ExpenseService expenseService;
     private final CookieService cookieService;
 
     /**
@@ -65,18 +70,42 @@ public class ReportService {
         List<Sale> sales = saleRepository.findSalesBetweenDates(startDate, endDate, userId);
 
         BigDecimal grossIncome = BigDecimal.ZERO;
-        BigDecimal totalCost = BigDecimal.ZERO;
+        BigDecimal totalExpenses = expenseRepository.findExpensesBetweenDates(startDate, endDate, userId)
+                .stream()
+                .map(Expense::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         for (Sale sale : sales) {
             grossIncome = grossIncome.add(sale.getTotalSale());
-            for (SaleDetail detail : sale.getSaleDetails()) {
-                BigDecimal costForDetail = detail.getCostPrice().multiply(detail.getQuantity());
-                totalCost = totalCost.add(costForDetail);
-            }
         }
 
-        BigDecimal grossProfit = grossIncome.subtract(totalCost);
-        return new DailyIncomeResponse(grossIncome, totalCost, grossProfit);
+        BigDecimal netResult = grossIncome.subtract(totalExpenses);
+        return new DailyIncomeResponse(grossIncome, BigDecimal.ZERO, netResult,
+                totalExpenses, netResult, sales.size());
+    }
+
+    public ExpenseAnalysisResponse getExpenseAnalysis(YearMonth month, HttpServletRequest request) {
+        return getExpenseAnalysis(month.atDay(1), month.atEndOfMonth(), request);
+    }
+
+    public ExpenseAnalysisResponse getExpenseAnalysis(LocalDate startDate, LocalDate endDate, HttpServletRequest request) {
+        User user = getUserFromCookie(request);
+        List<Expense> expenses = expenseRepository.findExpensesBetweenDates(startDate, endDate, user.getId());
+
+        BigDecimal total = expenses.stream().map(Expense::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
+        Map<String, BigDecimal> byCategory = groupExpenses(expenses, Expense::getExpenseType);
+        Map<String, BigDecimal> byPaymentMethod = groupExpenses(expenses, Expense::getPaymentMethod);
+
+        return new ExpenseAnalysisResponse(total, byCategory, byPaymentMethod,
+                expenses.stream().sorted(Comparator.comparing(Expense::getDate).reversed())
+                        .map(expenseService::convertToDto)
+                        .toList());
+    }
+
+    private Map<String, BigDecimal> groupExpenses(List<Expense> expenses, java.util.function.Function<Expense, String> keyExtractor) {
+        Map<String, BigDecimal> grouped = new LinkedHashMap<>();
+        expenses.forEach(expense -> grouped.merge(keyExtractor.apply(expense), expense.getAmount(), BigDecimal::add));
+        return grouped;
     }
 
     /**

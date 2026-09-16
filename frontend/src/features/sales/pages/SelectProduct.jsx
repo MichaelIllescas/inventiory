@@ -24,7 +24,7 @@ const SelectProduct = ({ onProductoSeleccionado, productosSeleccionados }) => {
       <Select
         options={availableProducts.map((producto) => ({
           value: producto.id,
-          label: `${producto.code} - ${producto.name} - $${producto.salePrice}`,
+          label: `${producto.code ? `${producto.code} - ` : ""}${producto.name} - $${producto.salePrice}`,
           salePrice: producto.salePrice, // Se mantiene el precio para calcular el total después
         }))}
         onChange={onProductoSeleccionado}

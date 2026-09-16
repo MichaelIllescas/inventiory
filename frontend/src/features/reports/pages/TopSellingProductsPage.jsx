@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import useTopSellingProducts from "../api/useTopSellingProducts";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 
 const TopSellingProductsPage = () => {
   const currentMonth = new Date().toISOString().slice(0, 7); // Formato "YYYY-MM"
@@ -37,11 +37,12 @@ const TopSellingProductsPage = () => {
           {!loading && products.length > 0 && (
             <div className="chart-container mb-4" style={{ width: "100%", height: 300 }}>
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={products}>
-                  <XAxis dataKey="productName" />
-                  <YAxis />
+                <BarChart data={products} layout="vertical" margin={{ left: 20, right: 20 }}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis type="number" allowDecimals={false} />
+                  <YAxis type="category" dataKey="productName" width={150} />
                   <Tooltip />
-                  <Bar dataKey="totalQuantitySold" fill="#28a745" />
+                  <Bar dataKey="totalQuantitySold" fill="#28a745" name="Unidades vendidas" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -53,6 +54,7 @@ const TopSellingProductsPage = () => {
               <table className="table table-striped text-center">
                 <thead className="table-dark">
                   <tr>
+                    <th>Ranking</th>
                     <th>Producto</th>
                     <th>Código</th>
                     <th>Cantidad Vendida</th>
@@ -62,10 +64,11 @@ const TopSellingProductsPage = () => {
                 <tbody>
                   {products.map((product, index) => (
                     <tr key={index}>
+                      <td className="fw-bold">#{index + 1}</td>
                       <td>{product.productName}</td>
                       <td>{product.productCode}</td>
                       <td>{product.totalQuantitySold}</td>
-                      <td>${product.totalRevenue.toLocaleString()}</td>
+                      <td>${Number(product.totalRevenue || 0).toLocaleString("es-AR", { minimumFractionDigits: 2 })}</td>
                     </tr>
                   ))}
                 </tbody>

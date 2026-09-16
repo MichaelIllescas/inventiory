@@ -1,5 +1,6 @@
 import React from "react";
 import { Bar } from "react-chartjs-2";
+import { BarChart3 } from "lucide-react";
 import {
   Chart as ChartJS,
   BarElement,
@@ -52,7 +53,7 @@ const QuarterlyEarningsChart = ({ prod }) => {
 
   return (
     <div className="card p-3">
-      <h4 className="text-center">📊 Ganancias netas del Trimestre</h4>
+      <h4 className="text-center d-flex align-items-center justify-content-center gap-2"><BarChart3 size={20} strokeWidth={1.75} /> Ganancias netas del Trimestre</h4>
       <h6 className="text-center">(ventas-costos-gastos operativos)</h6>
       <div style={{ height: "300px" }}>
         <Bar data={data} options={options} />

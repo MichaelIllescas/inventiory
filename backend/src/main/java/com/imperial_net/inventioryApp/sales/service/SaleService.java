@@ -179,7 +179,7 @@ public class SaleService {
             // Verifica si el producto no es null antes de asignar sus valores
             if (detail.getProduct() != null) {
                 detailDTO.setProductId(detail.getProduct().getId());
-                detailDTO.setProductCode(detail.getProduct().getCode().toString());
+                detailDTO.setProductCode(detail.getProduct().getCode());
                 detailDTO.setProductName(detail.getProduct().getName());
                 detailDTO.setProductDescription(detail.getProduct().getDescription());
 

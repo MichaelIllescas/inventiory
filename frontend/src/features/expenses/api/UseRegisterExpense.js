@@ -10,7 +10,12 @@ const useRegisterExpense = () => {
   const formatDateToDDMMYYYY = (date) => {
     if (!date) return null;
     try {
-      const parsedDate = new Date(date);
+      if (typeof date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
+        const [year, month, day] = date.split("-");
+        return `${day}/${month}/${year}`;
+      }
+
+      const parsedDate = date instanceof Date ? date : new Date(date);
       if (!isValid(parsedDate)) throw new Error("Fecha inválida");
       return format(parsedDate, "dd/MM/yyyy"); // Enviamos el formato esperado por el backend
     } catch (error) {

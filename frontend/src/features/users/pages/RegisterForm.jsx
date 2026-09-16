@@ -57,32 +57,33 @@ const RegisterForm = () => {
       
         <h2 className="text-center pt-2"><Users size={24} className="me-2" />Registrar Usuario</h2>
         <form onSubmit={handleSubmit} className="p-4">
+          <p className="required-fields-note text-center mb-4">Los campos marcados con <span className="required-mark">*</span> son obligatorios.</p>
           <div className="row">
             <div className="col-md-6">
-              <label htmlFor="firstName" className="form-label">Nombre:</label>
+              <label htmlFor="firstName" className="form-label">Nombre: <span className="required-mark">*</span></label>
               <input type="text" name="firstName" id="firstName" value={formData.firstName} onChange={handleChange} required className="form-control" placeholder="Ej: Juan" />
 
-              <label htmlFor="documentNumber" className="form-label mt-3">D.N.I.:</label>
+              <label htmlFor="documentNumber" className="form-label mt-3">D.N.I.: <span className="required-mark">*</span></label>
               <input type="text" name="documentNumber" id="documentNumber" value={formData.documentNumber} onChange={handleChange} required className="form-control" placeholder="Ej: 40123456" />
 
-              <label htmlFor="address" className="form-label mt-3">Dirección:</label>
+              <label htmlFor="address" className="form-label mt-3">Dirección: <span className="required-mark">*</span></label>
               <input type="text" name="address" id="address" value={formData.address} onChange={handleChange} required className="form-control" placeholder="Ej: Av. Siempre Viva 742" />
 
-              <label htmlFor="password" className="form-label mt-3">Clave:</label>
+              <label htmlFor="password" className="form-label mt-3">Clave: <span className="required-mark">*</span></label>
               <input type="password" name="password" id="password" value={formData.password} onChange={handleChange} required className="form-control" placeholder="Ingresa una contraseña segura" />
             </div>
 
             <div className="col-md-6">
-              <label htmlFor="lastName" className="form-label">Apellido:</label>
+              <label htmlFor="lastName" className="form-label">Apellido: <span className="required-mark">*</span></label>
               <input type="text" name="lastName" id="lastName" value={formData.lastName} onChange={handleChange} required className="form-control" placeholder="Ej: Pérez" />
 
-              <label htmlFor="phone" className="form-label mt-3">Teléfono:</label>
+              <label htmlFor="phone" className="form-label mt-3">Teléfono: <span className="required-mark">*</span></label>
               <input type="text" name="phone" id="phone" value={formData.phone} onChange={handleChange} required className="form-control" placeholder="Ej: +54 9 11 2345-6789" />
 
-              <label htmlFor="email" className="form-label mt-3">Email:</label>
+              <label htmlFor="email" className="form-label mt-3">Email: <span className="required-mark">*</span></label>
               <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} required className="form-control" placeholder="Ej: usuario@email.com" />
 
-              <label htmlFor="role" className="form-label mt-3">Rol:</label>
+              <label htmlFor="role" className="form-label mt-3">Rol: <span className="required-mark">*</span></label>
               <select name="role" id="role" value={formData.role} onChange={handleChange} required className="form-select form-control">
                 <option disabled value="">Selecciona un rol</option>
                 <option value="ADMIN">Administrador</option>
@@ -92,7 +93,7 @@ const RegisterForm = () => {
           </div>
           <div className="col-lg-6 col-sm-12">
             
-              <label htmlFor="subscription" className="form-label mt-3">Sucripcion:</label>
+              <label htmlFor="subscription" className="form-label mt-3">Suscripción: <span className="required-mark">*</span></label>
               <select name="subscription" id="subscription" value={formData.subscription} onChange={handleChange} required className="form-select form-control">
                 <option disabled value="">Selecciona el tipo de Suscripcion</option>
                 <option value="FREE">FREE</option>

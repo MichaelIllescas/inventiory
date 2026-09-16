@@ -137,6 +137,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>inventiory</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

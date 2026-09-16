@@ -19,7 +19,7 @@ const useUpdateExpense = () => {
 
       const response = await apiClient.put(
         `/expenses/${id}`, // ✅ ID en la URL
-        { date, ...sanitizedData } // ✅ Asegura que `date` esté presente en el body
+        { expenseDate: date, ...sanitizedData }
       );
 
       return response.data;

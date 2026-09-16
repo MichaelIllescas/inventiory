@@ -129,7 +129,7 @@ public class SaleDetailService {
         dto.setSubtotal(detail.getSubtotal());
         dto.setCostPrice(detail.getCostPrice());
         dto.setProductName(detail.getProduct().getName());
-        dto.setProductCode(detail.getProduct().getCode().toString());
+        dto.setProductCode(detail.getProduct().getCode());
         dto.setProductCategory(detail.getProduct().getBrand().getName());
         dto.setProductId(detail.getProduct().getId());
         return dto;

@@ -1,9 +1,12 @@
 package com.imperial_net.inventioryApp.reports.controller;
 
 import com.imperial_net.inventioryApp.reports.dto.DailyIncomeResponse;
+import com.imperial_net.inventioryApp.reports.dto.ExpenseAnalysisResponse;
+import com.imperial_net.inventioryApp.reports.dto.InventoryAnalysisResponse;
 import com.imperial_net.inventioryApp.reports.dto.ProfitabilityDTO;
 import com.imperial_net.inventioryApp.reports.dto.TopCustomerResponse;
 import com.imperial_net.inventioryApp.reports.dto.TopSellingProductResponse;
+import com.imperial_net.inventioryApp.reports.service.InventoryAnalysisService;
 import com.imperial_net.inventioryApp.reports.service.ReportService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,7 @@ import java.util.List;
 public class ReportsController {
 
     private final ReportService reportService;
+    private final InventoryAnalysisService inventoryAnalysisService;
 
     /**
      * Devuelve los ingresos totales del día seleccionado.
@@ -100,5 +104,41 @@ public class ReportsController {
     @GetMapping("/profitability")
     public ResponseEntity<ProfitabilityDTO> getProfitability(@RequestParam Integer year, HttpServletRequest request) {
         return ResponseEntity.ok(reportService.getProfitabilityByYear(year, request));
+    }
+
+    @GetMapping("/expense-analysis")
+    public ResponseEntity<ExpenseAnalysisResponse> getExpenseAnalysis(
+            @RequestParam String period, @RequestParam String value, HttpServletRequest request) {
+        LocalDate start;
+        LocalDate end;
+        if ("YEAR".equals(period)) {
+            int year = Integer.parseInt(value);
+            start = LocalDate.of(year, 1, 1);
+            end = LocalDate.of(year, 12, 31);
+        } else if ("QUARTER".equals(period)) {
+            String[] parts = value.split("-Q");
+            YearMonth firstMonth = YearMonth.of(Integer.parseInt(parts[0]), (Integer.parseInt(parts[1]) - 1) * 3 + 1);
+            start = firstMonth.atDay(1);
+            end = firstMonth.plusMonths(2).atEndOfMonth();
+        } else {
+            YearMonth month = YearMonth.parse(value);
+            start = month.atDay(1);
+            end = month.atEndOfMonth();
+        }
+        return ResponseEntity.ok(reportService.getExpenseAnalysis(start, end, request));
+    }
+
+    /**
+     * Devuelve el análisis de inventario: valorización del stock, apertura por categoría y marca,
+     * clasificación ABC, stock inmovilizado, productos de mayor rotación y productos bajo el mínimo.
+     *
+     * @param months  cantidad de meses hacia atrás para medir la rotación (opcional, 6 por defecto).
+     * @param request Solicitud HTTP.
+     * @return análisis de inventario.
+     */
+    @GetMapping("/inventory-analysis")
+    public ResponseEntity<InventoryAnalysisResponse> getInventoryAnalysis(
+            @RequestParam(required = false) Integer months, HttpServletRequest request) {
+        return ResponseEntity.ok(inventoryAnalysisService.getInventoryAnalysis(months, request));
     }
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import useAnnualIncome from "../api/useAnnualIncome";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 const AnnualIncomePage = () => {
   const currentYear = new Date().getFullYear().toString(); // Año actual
@@ -16,13 +16,15 @@ const AnnualIncomePage = () => {
     grossIncome: 0,
     totalCost: 0,
     grossProfit: 0,
+    totalExpenses: 0,
+    netResult: 0,
+    salesCount: 0,
   };
 
-  // Datos para la gráfica
-  const data = [
-    { name: "Ingresos Brutos", value: safeIncome.grossIncome },
-    { name: "Costo Total", value: safeIncome.totalCost },
-    { name: "Ganancia Neta", value: safeIncome.grossProfit },
+  const formatCurrency = (value) => `$${Number(value || 0).toLocaleString("es-AR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  const chartData = [
+    { name: "Ventas", value: Number(safeIncome.grossIncome || 0) },
+    { name: "Gastos", value: Number(safeIncome.totalExpenses || 0) },
   ];
 
   return (
@@ -52,40 +54,62 @@ const AnnualIncomePage = () => {
           {/* Gráfico */}
           {!loading && (
             <>
-              <div className="chart-container mb-4" style={{ width: "100%", height: 300 }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={data}>
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="value" fill="#343a40" />
-                  </BarChart>
-                </ResponsiveContainer>
+              <div className="row g-3 mb-4">
+                {[['Ventas del año', safeIncome.grossIncome, 'primary'], ['Gastos del año', safeIncome.totalExpenses, 'warning'], ['Resultado neto', safeIncome.netResult, safeIncome.netResult >= 0 ? 'success' : 'danger']].map(([label, value, color]) => (
+                  <div className="col-md-4" key={label}>
+                    <div className={`border-start border-4 border-${color} bg-white rounded p-3 h-100`}>
+                      <span className="text-muted">{label}</span>
+                      <h3 className={`text-${color} mb-0`}>{formatCurrency(value)}</h3>
+                    </div>
+                  </div>
+                ))}
               </div>
 
+              <div className="row g-4 align-items-stretch">
+                <div className="col-md-6">
+                  <div className="bg-white rounded p-3 h-100" style={{ minHeight: 360 }}>
+                <h5 className="text-center mb-2">Ventas y gastos del año</h5>
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Pie data={chartData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={85} label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
+                      {chartData.map((entry, index) => <Cell key={entry.name} fill={['#0d6efd', '#f0ad00'][index]} />)}
+                    </Pie>
+                    <Tooltip formatter={(value) => formatCurrency(value)} />
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+                  </div>
+                </div>
+
               {/* Información detallada */}
-              <div className="row justify-content-center text-start mt-4">
-                <div className="col-md-8">
+                <div className="col-md-6">
+                  <div className="text-start p-3 h-100">
                   <div className="d-flex justify-content-between border-bottom py-2">
                     <h6 className="fw-bold">Total Vendido:</h6>
-                    <p className="fw-bold text-primary mb-0">${(safeIncome.grossIncome ?? 0).toLocaleString()}</p>
+                    <p className="fw-bold text-primary mb-0">{formatCurrency(safeIncome.grossIncome)}</p>
                   </div>
                   <p className="text-muted">Total de ingresos obtenidos por ventas en el año.</p>
 
                   <div className="d-flex justify-content-between border-bottom py-2">
-                    <h6 className="fw-bold">Costo Total:</h6>
-                    <p className="fw-bold text-warning mb-0">${(safeIncome.totalCost ?? 0).toLocaleString()}</p>
+                    <h6 className="fw-bold">Gastos del año:</h6>
+                    <p className="fw-bold text-warning mb-0">{formatCurrency(safeIncome.totalExpenses)}</p>
                   </div>
-                  <p className="text-muted">Costo de compra de los productos vendidos en el año.</p>
+                  <p className="text-muted">Total de gastos registrados en el año.</p>
 
                  
 
                   <div className="d-flex justify-content-between border-bottom py-2">
-                    <h6 className="fw-bold">Ganancia Neta:</h6>
-                    <p className="fw-bold text-success mb-0">${(safeIncome.grossProfit ?? 0).toLocaleString()}</p>
+                    <h6 className="fw-bold">Resultado Neto:</h6>
+                    <p className="fw-bold text-success mb-0">{formatCurrency(safeIncome.netResult)}</p>
                   </div>
-                  <p className="text-muted">Total Vendido menos el Costo Total.</p>
+                  <p className="text-muted">Ventas realizadas menos gastos del año.</p>
 
+                  <div className="d-flex justify-content-between border-bottom py-2">
+                    <h6 className="fw-bold">Ventas realizadas:</h6>
+                    <p className="fw-bold mb-0">{safeIncome.salesCount ?? 0}</p>
+                  </div>
+
+                  </div>
                 </div>
               </div>
             </>

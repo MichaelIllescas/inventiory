@@ -61,4 +61,39 @@ public interface SaleDetailRepository extends JpaRepository<SaleDetail, Long> {
                                             @Param("endDate") LocalDate endDate,
                                             @Param("userId") Long userId);
 
+    /**
+     * Devuelve, por producto, las unidades vendidas, el importe facturado y la fecha de la última venta
+     * dentro de un rango de fechas. Se utiliza para calcular la rotación del inventario.
+     *
+     * @param startDate fecha de inicio del rango.
+     * @param endDate   fecha de fin del rango.
+     * @param userId    ID del usuario propietario de las ventas.
+     * @return lista de arreglos con [idProducto, unidadesVendidas, importeVendido, fechaUltimaVenta].
+     */
+    @Query("SELECT p.id, SUM(sd.quantity), SUM(sd.subtotal), MAX(s.saleDate) " +
+            "FROM SaleDetail sd " +
+            "JOIN sd.product p " +
+            "JOIN sd.sale s " +
+            "WHERE s.saleDate BETWEEN :startDate AND :endDate AND s.user.id = :userId " +
+            "AND s.status = 'CONFIRMED' " +
+            "GROUP BY p.id")
+    List<Object[]> findSalesSummaryByProduct(@Param("startDate") LocalDate startDate,
+                                             @Param("endDate") LocalDate endDate,
+                                             @Param("userId") Long userId);
+
+    /**
+     * Devuelve la fecha de la última venta confirmada de cada producto, sin limitar el rango de fechas.
+     * Permite informar hace cuántos días no se vende un producto inmovilizado.
+     *
+     * @param userId ID del usuario propietario de las ventas.
+     * @return lista de arreglos con [idProducto, fechaUltimaVenta].
+     */
+    @Query("SELECT p.id, MAX(s.saleDate) " +
+            "FROM SaleDetail sd " +
+            "JOIN sd.product p " +
+            "JOIN sd.sale s " +
+            "WHERE s.user.id = :userId AND s.status = 'CONFIRMED' " +
+            "GROUP BY p.id")
+    List<Object[]> findLastSaleDateByProduct(@Param("userId") Long userId);
+
 }

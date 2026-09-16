@@ -10,7 +10,7 @@ import TotalCustomersCard from "./TotalCustomersCard";
 import TotalProductsCard from "./TotalProductsCard";
 import TotalInvestmentCard from "./TotalInvestmentCard";
 import useDashboardData from "../../dashboard/api/useDashboardData";
-import InventoryTour from "./InventoryTour";
+import { LayoutDashboard } from "lucide-react";
 
 const Dashboard = () => {
   
@@ -23,8 +23,8 @@ const Dashboard = () => {
 <>
 
     <div className="container mt-5 pt-4" data-aos="fade-in">
-      <h1 className="mb-4 text-center" data-aos="fade-down">
-        📊 Dashboard de Inventiory
+      <h1 className="mb-4 text-center d-flex align-items-center justify-content-center gap-2" data-aos="fade-down">
+        <LayoutDashboard size={32} strokeWidth={1.75} /> Dashboard de Inventiory
       </h1>
 
       {/* Contenedor de métricas */}

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import {
-  LineChart,
-  Line,
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
   Tooltip,
+  CartesianGrid,
+  ReferenceLine,
   ResponsiveContainer,
 } from "recharts";
 import useProfitability from "../api/useProfitability"; // Importamos el hook
@@ -21,6 +23,8 @@ const ProfitabilityPage = () => {
   useEffect(() => {
     fetchProfitability(selectedYear);
   }, [selectedYear, fetchProfitability]);
+
+  const formatCurrency = (value) => `$${Number(value || 0).toLocaleString("es-AR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
 
   return (
@@ -59,21 +63,17 @@ const ProfitabilityPage = () => {
           {financialData && (
             <>
               {/* Gráfico de Rentabilidad Trimestral */}
-              <div
-                className="chart-container mb-4"
-                style={{ width: "100%", height: 300 }}
-              >
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={financialData.quarterlyData}>
-                    <XAxis dataKey="quarter" />
-                    <YAxis />
-                    <Tooltip />
-                    <Line
-                      type="monotone"
-                      dataKey="percentage"
-                      stroke="#28a745"
-                    />
-                  </LineChart>
+              <div className="bg-white rounded p-3 mb-4" style={{ width: "100%", minWidth: 0, height: "clamp(300px, 42vw, 330px)" }}>
+                <h5 className="text-center mb-2">Evolución trimestral</h5>
+                <ResponsiveContainer width="100%" height="100%" minWidth={0}>
+                  <BarChart data={financialData.quarterlyData} margin={{ top: 10, right: 5, left: -15, bottom: 15 }}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="quarter" tick={{ fontSize: 11 }} />
+                    <YAxis width={52} tick={{ fontSize: 11 }} tickFormatter={(value) => `${value}%`} />
+                    <Tooltip formatter={(value) => `${value}%`} />
+                    <ReferenceLine y={0} stroke="#6c757d" />
+                    <Bar dataKey="percentage" fill="#198754" name="Rentabilidad" />
+                  </BarChart>
                 </ResponsiveContainer>
               </div>
 
@@ -84,7 +84,7 @@ const ProfitabilityPage = () => {
                     <tr>
                       <th>Trimestre</th>
                       <th>Ingresos</th>
-                      <th>Gastos (Costo Productos + Gastos Operativos)</th>
+                      <th>Gastos</th>
                       <th>Beneficio Neto</th>
                       <th>Rentabilidad (%)</th>
                     </tr>
@@ -93,11 +93,11 @@ const ProfitabilityPage = () => {
                     {financialData.quarterlyData.map((data, index) => (
                       <tr key={index}>
                         <td>{data.quarter}</td>
-                        <td>${data.income.toLocaleString()}</td>
+                        <td>{formatCurrency(data.income)}</td>
                         <td>
-                          ${(data.productCost + data.expenses).toLocaleString()}
+                          {formatCurrency(data.expenses)}
                         </td>
-                        <td>${data.netProfit.toLocaleString()}</td>
+                        <td>{formatCurrency(data.netProfit)}</td>
                         <td>{data.percentage}%</td>
                       </tr>
                     ))}
@@ -106,70 +106,39 @@ const ProfitabilityPage = () => {
 
               </div>
 
-              {/* Descripción sobre los datos */}
-              <div className="alert alert-info text-center">
-                <p>
-                  <strong>Explicación de los datos:</strong>
-                </p>
-                <ul className="text-start">
-                  <li>
-                    <strong>Ingresos:</strong> Total de ventas realizadas en el
-                    período.
-                  </li>
-                  <li>
-                    <strong>Gastos:</strong> Incluye costos de productos
-                    vendidos y gastos operativos.
-                  </li>
-                  <li>
-                    <strong>Beneficio Neto:</strong> Ingresos menos los gastos
-                    totales.
-                  </li>
-                  <li>
-                    <strong>Rentabilidad (%):</strong> Relación entre el
-                    beneficio neto y los ingresos, expresada en porcentaje.
-                  </li>
-                </ul>
+              {/* Resumen General */}
+              <div className="row g-3 mt-2">
+                {[
+                  ["Ingresos totales", financialData.income, "primary"],
+                  ["Gastos totales", financialData.expenses, "warning"],
+                  ["Beneficio neto", financialData.netProfit, financialData.netProfit >= 0 ? "success" : "danger"],
+                  ["Rentabilidad anual", `${financialData.profitabilityPercentage}%`, "info"],
+                ].map(([label, value, color]) => (
+                  <div className="col-sm-6 col-lg-3" key={label}>
+                    <div className={`border-start border-4 border-${color} bg-white rounded p-3 h-100`}>
+                      <span className="text-muted">{label}</span>
+                      <h4 className={`text-${color} mb-0`}>{typeof value === "string" ? value : formatCurrency(value)}</h4>
+                    </div>
+                  </div>
+                ))}
               </div>
 
-              {/* Resumen General */}
-              <div className="text-center mt-4">
-                <h5>
-                  <strong>Resumen de Rentabilidad ({selectedYear})</strong>
-                </h5>
-                <p>
-                  <strong>Ingresos Totales:</strong> $
-                  {financialData.income.toLocaleString()}
-                </p>
-                <p>
-                  <strong>
-                    Gastos Totales (Costo de Productos + Gastos Operativos):
-                  </strong>{" "}
-                  $
-                  {(
-                    financialData.totalCost + financialData.expenses
-                  ).toLocaleString()}
-                </p>
-                
-                <p>
-                  <strong>Beneficio Neto:</strong> $
-                  {financialData.netProfit.toLocaleString()}
-                </p>
-                <p>
-                  <strong>Rentabilidad Anual:</strong>{" "}
-                  {financialData.profitabilityPercentage}%
-                </p>
-              </div>
-              {/* Explicación de la diferencia entre rentabilidad anual y trimestral */}
-              <div className="alert alert-warning text-center mt-4">
-                <p>
-                  <strong>Nota sobre la Rentabilidad Anual:</strong>
-                </p>
-                <p>
-                  <strong>
-                    Rentabilidad Anual (%) = (Beneficio Neto Anual / Ingresos
-                    Totales Anuales) × 100
-                  </strong>
-                </p>
+              <div className="mt-4 p-3 bg-light border rounded">
+                <h6 className="fw-bold mb-3">¿Qué significa cada indicador?</h6>
+                <div className="row g-3 small">
+                  <div className="col-md-6">
+                    <strong>Ingresos:</strong> total cobrado por las ventas realizadas durante el período.
+                  </div>
+                  <div className="col-md-6">
+                    <strong>Gastos:</strong> gastos operativos registrados durante el período.
+                  </div>
+                  <div className="col-md-6">
+                    <strong>Beneficio neto:</strong> ingresos menos gastos. Puede ser negativo si los gastos superan las ventas.
+                  </div>
+                  <div className="col-md-6">
+                    <strong>Rentabilidad:</strong> beneficio neto expresado como porcentaje de los ingresos.
+                  </div>
+                </div>
               </div>
             </>
           )}

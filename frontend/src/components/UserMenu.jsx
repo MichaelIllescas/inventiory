@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
-import { UserCircle, LogOut, FileText, Settings } from "lucide-react";
+import { UserCircle, LogOut, Settings } from "lucide-react";
 import NavbarDropdown from "./NavbarDropdown";
 import NavbarItem from "./NavbarItem";
-// import Documentacion from "../assets/Manual De Usuario.pdf";
 import "../styles/modal.css";
 import "../styles/userMenu.css";
 
@@ -12,15 +11,9 @@ const UserMenu = ({ handleLogout, user }) => {
 
   return (
     <>
-      <NavbarDropdown text={user} icon={UserCircle}>
+      <NavbarDropdown text={user} icon={UserCircle} menuClassName="user-menu-dropdown">
         <hr />
         <NavbarItem url="/configuration" icon={Settings} text="Configuración" />
-        <hr />
-        <NavbarItem
-          url="/downloadManual"
-          icon={FileText}
-          text="Descargar Manual"
-        />
         <hr />
         <NavbarItem url="/changePassword" icon={UserCircle} text="Cambiar Contraseña" />
         <hr />

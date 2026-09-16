@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -10,12 +11,12 @@ const Footer = () => {
             <small>&copy; {new Date().getFullYear()} Inventiory. Todos los derechos reservados.</small>
           </Col>
           <Col md={6} className="text-center text-md-end">
-            <a href="/terminos" className="text-white me-3 text-decoration-none">
+            <Link to="/terminos" className="text-white me-3 text-decoration-none">
               Términos y condiciones
-            </a>
-            <a href="/privacidad" className="text-white text-decoration-none">
+            </Link>
+            <Link to="/privacidad" className="text-white text-decoration-none">
               Política de privacidad
-            </a>
+            </Link>
           </Col>
         </Row>
       </Container>

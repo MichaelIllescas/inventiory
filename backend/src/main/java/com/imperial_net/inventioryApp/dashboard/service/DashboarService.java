@@ -7,10 +7,9 @@ import com.imperial_net.inventioryApp.exceptions.ProductException;
 import com.imperial_net.inventioryApp.expenses.model.Expense;
 import com.imperial_net.inventioryApp.expenses.repository.ExpenseRepository;
 import com.imperial_net.inventioryApp.products.dto.StockLowDTO;
+import com.imperial_net.inventioryApp.products.models.Product;
 import com.imperial_net.inventioryApp.products.repository.ProductRepository;
 import com.imperial_net.inventioryApp.products.service.ProductService;
-import com.imperial_net.inventioryApp.purchases.model.Purchase;
-import com.imperial_net.inventioryApp.purchases.repository.PurchaseRepository;
 import com.imperial_net.inventioryApp.reports.dto.*;
 import com.imperial_net.inventioryApp.reports.service.ReportService;
 import com.imperial_net.inventioryApp.sales.model.Sale;
@@ -44,7 +43,6 @@ public class DashboarService {
     private final ReportService reportService;
     private final ClientRepository clientRepository;
     private final ProductRepository productRepository;
-    private final PurchaseRepository purchaseRepository;
 
     /**
      * Obtiene la ganancia neta total del usuario.
@@ -240,26 +238,24 @@ public class DashboarService {
     }
 
     /**
-     * Retorna el capital actualmente invertido en productos con stock.
+     * Retorna el valor actual del inventario del negocio.
      *
      * @param request la solicitud HTTP.
-     * @return capital invertido.
+     * @return valor actual del inventario.
      */
     public BigDecimal getTotalInvestedCapital(HttpServletRequest request) {
         Long userId = cookieService.getUserFromCookie(request)
                 .map(User::getId)
                 .orElseThrow(() -> new ProductException("Usuario no autenticado"));
 
-        List<Purchase> purchases = purchaseRepository.findActivePurchasesWithStockByUser(userId);
+        return productRepository.findAllByRegistratedBy_IdAndStateTrue(userId).stream()
+                .filter(product -> product.getStock() != null && product.getSalePrice() != null)
+                .map(this::calculateProductInventoryValue)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
 
-        BigDecimal totalInvestment = BigDecimal.ZERO;
-
-        for (Purchase purchase : purchases) {
-            BigDecimal investment = purchase.getPurchasePrice().multiply(purchase.getRemainingStock());
-            totalInvestment = totalInvestment.add(investment);
-        }
-
-        return totalInvestment;
+    private BigDecimal calculateProductInventoryValue(Product product) {
+        return product.getStock().multiply(product.getSalePrice());
     }
 
     /**

@@ -109,4 +109,16 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
      * @return un {@link Optional} que contiene el producto si se encuentra, o vacío si no.
      */
     Optional<Product> findByCodeAndRegistratedBy_Id(String productCode, Long userId);
+
+    /**
+     * Obtiene los productos activos de un usuario trayendo la marca en la misma consulta.
+     * Evita el N+1 de la relación con {@link Brand} en los reportes que recorren todo el catálogo.
+     *
+     * @param userId ID del usuario.
+     * @return lista de productos activos con su marca ya cargada.
+     */
+    @Query("SELECT p FROM Product p " +
+            "LEFT JOIN FETCH p.brand " +
+            "WHERE p.registratedBy.id = :userId AND p.state = true")
+    List<Product> findActiveProductsWithBrandByUser(@Param("userId") Long userId);
 }

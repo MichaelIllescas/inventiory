@@ -29,12 +29,7 @@ const ExpenseRegister = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formattedData = {
-      ...formData,
-      expenseDate: formData.expenseDate.toISOString().split("T")[0],
-    };
-
-    const result = await registrationExpense(formattedData);
+    const result = await registrationExpense(formData);
     if (result) {
       setConfirm(true);
       setFormData({

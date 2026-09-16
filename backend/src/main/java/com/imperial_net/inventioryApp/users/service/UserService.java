@@ -249,11 +249,79 @@ public class UserService {
         resetTokenRepository.save(resetToken);
 
         String link = "http://localhost:3000/reset-password?token=" + token;
-        emailService.send(
+        emailService.sendHtml(
                 email,
-                "Recuperación de contraseña",
-                "Haz clic en el siguiente enlace para restablecer tu contraseña:\n" + link + "\n\nEste enlace expirará en 30 minutos."
+                "Restablecé tu contraseña de Inventiory",
+                buildResetPasswordEmail(user, link)
         );
+    }
+
+    private String buildResetPasswordEmail(User user, String link) {
+        String firstName = escapeHtml(user.getFirstName());
+        String safeLink = escapeHtml(link);
+
+        return """
+                <!doctype html>
+                <html lang="es">
+                  <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Restablecer contraseña</title>
+                  </head>
+                  <body style="margin:0;padding:0;background-color:#f3f6fb;font-family:Arial,Helvetica,sans-serif;color:#1f2937;">
+                    <table role="presentation" width="100%%" cellspacing="0" cellpadding="0" style="background-color:#f3f6fb;margin:0;padding:32px 16px;">
+                      <tr>
+                        <td align="center">
+                          <table role="presentation" width="100%%" cellspacing="0" cellpadding="0" style="max-width:600px;background-color:#ffffff;border-radius:14px;overflow:hidden;border:1px solid #e5e7eb;">
+                            <tr>
+                              <td style="background-color:#0f172a;padding:28px 32px;">
+                                <p style="margin:0;color:#93c5fd;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;">Inventiory</p>
+                                <h1 style="margin:10px 0 0;color:#ffffff;font-size:26px;line-height:1.25;font-weight:700;">Restablecimiento de contraseña</h1>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style="padding:32px;">
+                                <p style="margin:0 0 16px;font-size:16px;line-height:1.6;">Hola %s,</p>
+                                <p style="margin:0 0 22px;font-size:16px;line-height:1.6;">Recibimos una solicitud para cambiar la contraseña de tu cuenta. Para continuar, hacé clic en el siguiente botón:</p>
+                                <table role="presentation" cellspacing="0" cellpadding="0" style="margin:28px 0;">
+                                  <tr>
+                                    <td style="border-radius:10px;background-color:#2563eb;">
+                                      <a href="%s" style="display:inline-block;padding:14px 24px;color:#ffffff;text-decoration:none;font-size:16px;font-weight:700;border-radius:10px;">Restablecer contraseña</a>
+                                    </td>
+                                  </tr>
+                                </table>
+                                <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#4b5563;">Este enlace expira en <strong>30 minutos</strong>. Si no solicitaste este cambio, podés ignorar este correo y tu contraseña seguirá igual.</p>
+                                <div style="margin:26px 0 0;padding:18px;background-color:#f8fafc;border:1px solid #e5e7eb;border-radius:10px;">
+                                  <p style="margin:0 0 8px;font-size:13px;line-height:1.5;color:#64748b;">Si el botón no funciona, copiá y pegá este enlace en tu navegador:</p>
+                                  <a href="%s" style="color:#2563eb;font-size:13px;line-height:1.5;word-break:break-all;">%s</a>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td style="padding:20px 32px;background-color:#f8fafc;border-top:1px solid #e5e7eb;">
+                                <p style="margin:0;color:#64748b;font-size:13px;line-height:1.5;">Imperial-net · Inventiory</p>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </body>
+                </html>
+                """.formatted(firstName, safeLink, safeLink, safeLink);
+    }
+
+    private String escapeHtml(String value) {
+        if (value == null) {
+            return "";
+        }
+
+        return value
+                .replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;")
+                .replace("'", "&#39;");
     }
 
     /**

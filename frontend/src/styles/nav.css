@@ -42,6 +42,113 @@ nav.navbar {
   /* background-image: url("../assets/img/job297-ploy-07c-blue-01.jpg"); */
 }
 
+nav.navbar > .container {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* =========================================================
+   RESPONSIVE: se colapsa por debajo de 1200px (navbar-expand-xl)
+   ========================================================= */
+@media (max-width: 1199.98px) {
+  nav.navbar {
+    padding: 0.5rem 0.75rem;
+    border-bottom-right-radius: 16px;
+    border-bottom-left-radius: 16px;
+  }
+
+  nav.navbar > .container {
+    padding-left: 0;
+    padding-right: 0;
+    flex-wrap: wrap;
+  }
+
+  nav.navbar .navbar-brand {
+    flex-shrink: 0;
+    margin-right: 0;
+  }
+
+  nav.navbar .navbar-toggler {
+    margin-left: auto;
+    flex-shrink: 0;
+    padding: 0.35rem 0.6rem;
+    border-color: rgba(0, 0, 0, 0.25);
+  }
+
+  nav.navbar .navbar-toggler:focus {
+    box-shadow: 0 0 0 0.2rem rgba(27, 43, 65, 0.25);
+  }
+
+  /* El menu desplegado no puede pasarse de la pantalla: scrollea */
+  nav.navbar .navbar-collapse {
+    flex-basis: 100%;
+    width: 100%;
+    min-width: 0;
+    max-height: calc(100vh - 90px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    margin-top: 0.5rem;
+  }
+
+  nav.navbar .navbar-nav {
+    width: 100%;
+  }
+
+  /* El menu de usuario deja de ir pegado a la derecha */
+  nav.navbar .navbar-nav.ms-auto {
+    margin-left: 0 !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+    margin-top: 0.25rem;
+    padding-top: 0.25rem;
+  }
+
+  /* Dropdowns en linea, a lo ancho, sin ancho minimo fijo */
+  nav.navbar .ul-dropdown {
+    position: static !important;
+    float: none;
+    width: 100%;
+    min-width: 0;
+    margin: 0 0 0.25rem 0;
+    padding: 4px 8px 4px 20px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: none;
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+
+  nav.navbar .rotate-center {
+    animation: none;
+  }
+}
+
+/* Telefonos */
+@media (max-width: 575.98px) {
+  nav.navbar .navbar-brand img {
+    width: 44px;
+    height: 40px;
+  }
+
+  nav.navbar .navbar-collapse {
+    max-height: calc(100vh - 78px);
+  }
+
+  nav.navbar .nav-link {
+    font-size: 0.95rem;
+    padding-top: 0.45rem;
+    padding-bottom: 0.45rem;
+  }
+}
+
+/* Rango intermedio en modo expandido (1200-1399): apretar un poco */
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+  nav.navbar .navbar-nav .nav-link {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    font-size: 0.9rem;
+  }
+}
+
 /* 🎨 Color de texto navbar */
 .nav-color {
   color: var(--text-accent);
@@ -99,56 +206,4 @@ nav.navbar {
 /* 🔤 Peso de íconos */
 i {
   font-weight: 100px;
-}
-
-/* ✅ Forzar visibilidad de dropdowns para el tour */
-.dropdown-menu.show {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  z-index: 9990 !important;
-}
-
-@media (max-width: 768px) {
-  .react-joyride__tooltip {
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: 90% !important;
-    max-width: 320px !important; /* opcional para evitar que se pase */
-  }
-
-  .react-joyride__beacon,
-  .react-joyride__tooltip__arrow {
-    display: none !important; /* oculta el triangulito si no se alinea bien */
-  }
-}
-
-
-/* Estilos para que el tooltip centrado se vea bien en móviles */
-.react-joyride__tooltip {
-  max-width: 90vw !important;
-  width: auto !important;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  box-sizing: border-box;
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  text-align: center;
-}
-
-/* En móviles, centrar y achicar */
-@media (max-width: 768px) {
-  .react-joyride__tooltip {
-    left: 50% !important;
-    top: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    max-width: 90vw !important;
-    width: 90vw !important;
-    font-size: 0.95rem;
-  }
-
-  .react-joyride__tooltip__arrow {
-    display: none !important; /* opcional si no apunta a ningún target */
-  }
 }

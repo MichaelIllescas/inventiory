@@ -1,17 +1,42 @@
-import React from 'react';
-import NavBarLandingPage from './NavBarLandingPage';
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 import Footer from "../../../layout/Footer";
-import PrivacyPage from '../components/PrivacyPage';
-import TermsPage from '../components/TermsPage';
+import logo from '../../../assets/img/logo.png';
+import '../../../styles/legal.css';
 
-const LegalLayout = () => {
+/**
+ * Envoltorio de las páginas legales públicas (términos y privacidad).
+ *
+ * No usa la navegación de la landing a propósito: sus enlaces apuntan a
+ * secciones de la página de inicio (#beneficios, #planes) que acá no existen.
+ * En su lugar muestra una barra mínima con la marca y una salida al inicio.
+ */
+const LegalLayout = ({ children }) => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [children]);
+
   return (
     <>
-      <NavBarLandingPage />
-      <main style={{ marginTop: '90px' }}>
-        <PrivacyPage/>
-        <TermsPage/>
+      <header className="legal-topbar">
+        <div className="legal-topbar__inner">
+          <Link to="/" className="legal-topbar__brand">
+            <img src={logo} alt="Inventiory" />
+            <span>Inventiory</span>
+          </Link>
+          <Link to="/" className="legal-topbar__back">
+            <ArrowLeft size={15} aria-hidden="true" /> Volver al inicio
+          </Link>
+        </div>
+      </header>
+
+      <main className="legal-page">
+        <article className="legal-doc">
+          {children}
+        </article>
       </main>
+
       <Footer />
     </>
   );

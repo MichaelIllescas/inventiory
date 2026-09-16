@@ -1,0 +1,19 @@
+# Sirve la SPA desde la subcarpeta dist/ y fuerza HTTPS.
+# Subir este archivo al raiz del hosting (public_html), con dist/ al lado.
+
+RewriteEngine On
+
+# Forzar HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# Evitar reescribir lo que ya apunta a dist/
+RewriteCond %{REQUEST_URI} ^/dist/
+RewriteRule ^ - [L]
+
+# Archivos estaticos existentes dentro de dist/ (js, css, imagenes)
+RewriteCond %{DOCUMENT_ROOT}/dist/$1 -f
+RewriteRule ^(.*)$ dist/$1 [L]
+
+# Cualquier otra ruta la resuelve React Router
+RewriteRule ^ dist/index.html [L]

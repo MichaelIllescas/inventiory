@@ -26,10 +26,9 @@
     Calendar ,
     LucideChartBarIncreasing,
     LucideChartBarStacked,
-    PilcrowRight
+    PilcrowRight,
+    Boxes
   } from "lucide-react";
-  import "../styles/nav.css";
-import InventoryTour from "../features/dashboard/pages/InventoryTour";
 import { useRef } from "react";
   const handleLogout = async () => {
     try {
@@ -53,7 +52,7 @@ import { useRef } from "react";
 
     return (
       <>
-      <nav ref={navRef} className="navbar navbar-expand-lg fixed-top">
+      <nav ref={navRef} className="navbar navbar-expand-xl fixed-top">
 
         <div className="container">
           <Link to="/dashboard" className="navbar-brand">
@@ -82,7 +81,6 @@ import { useRef } from "react";
                   url="/productRegister"
                   icon={Package}
                   text="Registrar Producto"
-                   id="tour-producto"
                 />
                 <hr />
                 <NavbarItem
@@ -118,7 +116,6 @@ import { useRef } from "react";
                   url="/providerRegister"
                   icon={Truck}
                   text="Registrar Proveedor"
-                  id="tour-proveedor"
                 />
                 <hr />
                 <NavbarItem
@@ -135,7 +132,6 @@ import { useRef } from "react";
                   url="/clientRegister"
                   icon={UserCheck}
                   text="Registrar Cliente"
-                   id="tour-cliente"
                 />
                 <hr />
                 <NavbarItem
@@ -168,7 +164,6 @@ import { useRef } from "react";
                   url="/saleRegister"
                   icon={Truck}
                   text="Registrar Venta"
-                   id="tour-venta"
                 />
                 <hr />
                 <NavbarItem
@@ -213,9 +208,21 @@ import { useRef } from "react";
                             />
                         <hr />
                         <NavbarItem
+                              url="/inventoryAnalysis"
+                              icon={Boxes  }
+                              text="Análisis de Inventario"
+                            />
+                        <hr />
+                        <NavbarItem
                               url="/profiability"
                               icon={PilcrowRight  }
                               text="Rentabilidad"
+                            />
+                        <hr />
+                        <NavbarItem
+                              url="/expenseAnalysis"
+                              icon={BarChart}
+                              text="Análisis de Gastos"
                             />
                         <hr />
               </NavbarDropdown>
@@ -254,7 +261,6 @@ import { useRef } from "react";
         </div>
       
       </nav>
-        <InventoryTour />
         
         </>
     );

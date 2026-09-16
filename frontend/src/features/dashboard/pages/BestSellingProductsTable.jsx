@@ -1,5 +1,6 @@
 import React from "react";
 import DataTable from "../../../components/DataTable";
+import { Flame } from "lucide-react";
 
 const BestSellingProductsTable = ({ prod }) => {
   // Mapeamos los datos que vienen del backend
@@ -17,7 +18,7 @@ const BestSellingProductsTable = ({ prod }) => {
 
   return (
     <div className="card p-3">
-      <h4 className="text-center">🔥 Productos Más Vendidos</h4>
+      <h4 className="text-center d-flex align-items-center justify-content-center gap-2"><Flame size={20} strokeWidth={1.75} /> Productos Más Vendidos</h4>
       <DataTable columns={columns} data={productos} />
     </div>
   );

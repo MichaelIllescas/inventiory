@@ -1,5 +1,6 @@
 import React from "react";
 import DataTable from "../../../components/DataTable";
+import { AlertTriangle } from "lucide-react";
 
 const LowStockProductsTable = ({ prod }) => {
   const columns = [
@@ -21,7 +22,7 @@ const LowStockProductsTable = ({ prod }) => {
 
   return (
     <div className="card p-3">
-      <h4 className="text-center">⚠️ Productos con Stock Bajo</h4>
+      <h4 className="text-center d-flex align-items-center justify-content-center gap-2"><AlertTriangle size={20} strokeWidth={1.75} /> Productos con Stock Bajo</h4>
       <DataTable
         columns={columns}
         data={prod || []}

@@ -108,12 +108,12 @@ const PurchaseRegister = ({ preselectedProduct = null }) => {
               <Select
                 name="productId"
                 value={memoizedProducts
-                  .map(product => ({ value: product.id, label: `${product.name} - ${product.code}` }))
+                  .map(product => ({ value: product.id, label: product.code ? `${product.name} - ${product.code}` : product.name }))
                   .find(option => option.value === formData.productId) || null}
                 onChange={handleChange}
                 options={memoizedProducts.map(product => ({
                   value: product.id,
-                  label: `${product.name} - ${product.code}`
+                  label: product.code ? `${product.name} - ${product.code}` : product.name
                 }))}
                 placeholder="Seleccione un producto"
                 isSearchable

@@ -2,6 +2,7 @@ package com.imperial_net.inventioryApp.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,6 +13,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Configuración de seguridad para la aplicación.
@@ -24,6 +26,10 @@ public class SecurityConfig {
 
     private final JwtCookieAuthenticationFilter jwtCookieAuthenticationFilter;  // Filtro para manejar la autenticación mediante cookies.
     private final AuthenticationProvider authenticationProvider;  // Proveedor de autenticación.
+
+    /** Origenes permitidos para CORS, definidos por perfil. */
+    @Value("${security.cors.allowed-origins}")
+    private List<String> allowedOrigins;
 
     /**
      * Configura el filtrado de seguridad para la aplicación web.
@@ -38,13 +44,8 @@ public class SecurityConfig {
                 // Configura CORS (Cross-Origin Resource Sharing), permitiendo solicitudes desde ciertos orígenes
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration corsConfiguration = new CorsConfiguration();
-                    // Se permiten solicitudes desde localhost y ciertas rutas específicas
-                    corsConfiguration.setAllowedOriginPatterns(Arrays.asList(
-                            "http://localhost*",
-                            "http://localhost",
-                            "/auth/forgot-password",
-                            "/auth/reset-password"
-                    ));
+                    // Origenes permitidos, configurables por perfil (security.cors.allowed-origins)
+                    corsConfiguration.setAllowedOriginPatterns(allowedOrigins);
                     // Métodos HTTP permitidos en CORS
                     corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT","PATCH", "DELETE", "OPTIONS"));
                     // Se permite cualquier encabezado

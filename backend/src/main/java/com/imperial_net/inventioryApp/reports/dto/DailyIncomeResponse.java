@@ -27,4 +27,8 @@ public class DailyIncomeResponse {
      * Ganancia bruta del día (grossIncome - totalCost).
      */
     private BigDecimal grossProfit;
+
+    private BigDecimal totalExpenses;
+    private BigDecimal netResult;
+    private long salesCount;
 }

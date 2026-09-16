@@ -1,3 +1,14 @@
-ul{
-    margin-right: 50px;
+.user-menu-dropdown {
+    right: 0 !important;
+    left: auto !important;
+    min-width: 260px;
+    max-width: min(320px, calc(100vw - 1rem));
+    margin-right: 0 !important;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+.user-menu-dropdown .dropdown-item {
+    white-space: normal;
+    word-break: normal;
 }

@@ -7,6 +7,8 @@ import { LoadingScreen } from "../../../components/LoadingScreen";
 import EditModal from "./../../../components/EditModal";
 import ToastMessage from "./../../../components/ToastMessage";
 import ConfirmChangeStateModal from "./ConfirmChangeStateModal";
+import { Modal, Button } from "react-bootstrap";
+import { FaEye, FaEdit, FaToggleOn, FaToggleOff } from "react-icons/fa";
 
 const UsersPage = () => {
   const { users, loading, error, fetchUsers } = useUsers();
@@ -15,6 +17,7 @@ const UsersPage = () => {
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isChangeStateModalOpen, setIsChangeStateModalOpen] = useState(false);
+  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [toast, setToast] = useState({
     show: false,
@@ -31,6 +34,10 @@ const UsersPage = () => {
     const user = users.find((u) => u.id === id);
     setSelectedUser(user);
     setIsEditModalOpen(true);
+  };
+  const handleDetails = (id) => {
+    setSelectedUser(users.find((u) => u.id === id));
+    setIsDetailsModalOpen(true);
   };
   const handleSave = async (updatedUser) => {
     try {
@@ -106,34 +113,19 @@ const UsersPage = () => {
   const columns = useMemo(
     () => [
       { Header: "ID", accessor: "id" },
-      { Header: "NOMBRE", accessor: "firstName" },
-      { Header: "APELLIDO", accessor: "lastName" },
-      { Header: "DNI", accessor: "documentNumber" },
-      { Header: "TELEFONO", accessor: "phone" },
-      { Header: "DIRECCION", accessor: "address" },
-      { Header: "EMAIL", accessor: "email" },
+      { Header: "NOMBRE", accessor: "firstName", Cell: ({ row }) => `${row.original.firstName} ${row.original.lastName}` },
       { Header: "ESTADO", accessor: "state" },
       { Header: "ROL", accessor: "role" },
-      { Header: "FECHA DE REGISTRO", accessor: "registrationDate" },
       { Header: "PLAN", accessor: "subscription"},
       {
         Header: "ACCIONES",
         accessor: "actions",
         Cell: ({ row }) => (
-          <div className="d-flex ">
-            <button
-              className="btn btn-primary btn-sm "
-              onClick={() => handleEdit(row.original.id)}
-              style={{ width: "40px", margin: "0 auto", borderRadius: "150px" }}
-            >
-              ✏️
-            </button>
-            <button
-              className="btn btn-warning btn-sm"
-              style={{ width: "40px", margin: "0 auto", borderRadius: "150px" }}
-              onClick={() => handleChangeStateClick(row.original.id)}
-            >
-              {row.original.state === "ACTIVO" ? "✅" : "🚫"}
+          <div className="d-flex gap-2 justify-content-center">
+            <button className="btn btn-info btn-sm" title="Ver detalles" onClick={() => handleDetails(row.original.id)}><FaEye /></button>
+            <button className="btn btn-primary btn-sm" title="Editar usuario" onClick={() => handleEdit(row.original.id)}><FaEdit /></button>
+            <button className="btn btn-warning btn-sm" title="Cambiar estado" onClick={() => handleChangeStateClick(row.original.id)}>
+              {row.original.state === "ACTIVO" ? <FaToggleOff /> : <FaToggleOn />}
             </button>
           </div>
         ),
@@ -168,6 +160,12 @@ const UsersPage = () => {
         onConfirm={handleChangeState}
         user={selectedUser}
       />
+
+      <Modal show={isDetailsModalOpen} onHide={() => setIsDetailsModalOpen(false)} centered>
+        <Modal.Header closeButton><Modal.Title>Detalles del Usuario</Modal.Title></Modal.Header>
+        <Modal.Body>{selectedUser && <div className="d-grid gap-2"><div><strong>Nombre:</strong> {selectedUser.firstName} {selectedUser.lastName}</div><div><strong>DNI:</strong> {selectedUser.documentNumber}</div><div><strong>Teléfono:</strong> {selectedUser.phone || "No informado"}</div><div><strong>Dirección:</strong> {selectedUser.address || "No informada"}</div><div><strong>Email:</strong> {selectedUser.email}</div><div><strong>Rol:</strong> {selectedUser.role}</div><div><strong>Plan:</strong> {selectedUser.subscription}</div><div><strong>Fecha de registro:</strong> {selectedUser.registrationDate}</div></div>}</Modal.Body>
+        <Modal.Footer><Button variant="secondary" onClick={() => setIsDetailsModalOpen(false)}>Cerrar</Button></Modal.Footer>
+      </Modal>
 
       <ToastMessage
         show={toast.show}

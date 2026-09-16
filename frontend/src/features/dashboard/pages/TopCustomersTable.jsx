@@ -1,4 +1,5 @@
 import DataTable from "../../../components/DataTable";
+import { Trophy } from "lucide-react";
 
 const TopCustomersTable = ({ prod }) => {
   const clientes = prod?.map((cliente, index) => ({
@@ -23,7 +24,7 @@ const TopCustomersTable = ({ prod }) => {
 
   return (
     <div className="card p-3">
-      <h4 className="text-center">🏆 Ranking de Clientes</h4>
+      <h4 className="text-center d-flex align-items-center justify-content-center gap-2"><Trophy size={20} strokeWidth={1.75} /> Ranking de Clientes</h4>
       <DataTable columns={columns} data={clientes} />
     </div>
   );

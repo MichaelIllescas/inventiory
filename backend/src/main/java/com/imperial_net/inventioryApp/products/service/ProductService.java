@@ -73,9 +73,10 @@ public class ProductService {
         User user = cookieService.getUserFromCookie(request)
                 .orElseThrow(() -> new ProductException("Usuario no autenticado. No se puede registrar el producto."));
 
-        if (productRequestDTO.getCode() != null && !productRequestDTO.getCode().isBlank()
-                && productRepository.existsByCodeAndRegistratedBy_Id(productRequestDTO.getCode(), user.getId())) {
-            throw new ProductException("Ya existe un producto con el código '" + productRequestDTO.getCode() + "'.");
+        String normalizedCode = normalizeCode(productRequestDTO.getCode());
+        if (normalizedCode != null
+                && productRepository.existsByCodeAndRegistratedBy_Id(normalizedCode, user.getId())) {
+            throw new ProductException("Ya existe un producto con el código '" + normalizedCode + "'.");
         }
 
         // Buscar o crear la marca
@@ -89,7 +90,7 @@ public class ProductService {
         // Crear y guardar producto
         Product product = new Product();
         product.setName(productRequestDTO.getName());
-        product.setCode(productRequestDTO.getCode());
+        product.setCode(normalizedCode);
         product.setBrand(brand);
         product.setDescription(productRequestDTO.getDescription());
         product.setSalePrice(productRequestDTO.getSalePrice());
@@ -132,7 +133,7 @@ public class ProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductException("Producto no encontrado en la base de datos"));
 
-        validateProductData(id, productRequest);
+        validateProductData(product, productRequest);
         updateEntity(product, productRequest);
         product.setUpdatedDate(LocalDate.now());
 
@@ -142,12 +143,16 @@ public class ProductService {
     /**
      * Valida que no haya otro producto con el mismo código.
      */
-    private void validateProductData(Long id, ProductRequestDTO productRequest) {
-        if (productRequest.getCode() == null || productRequest.getCode().isBlank()) {
+    private void validateProductData(Product product, ProductRequestDTO productRequest) {
+        String normalizedCode = normalizeCode(productRequest.getCode());
+        if (normalizedCode == null) {
             return;
         }
-        Optional<Product> existingProduct = productRepository.findByCode(productRequest.getCode());
-        if (existingProduct.isPresent() && !existingProduct.get().getId().equals(id)) {
+        Optional<Product> existingProduct = productRepository.findByCodeAndRegistratedBy_Id(
+                normalizedCode,
+                product.getRegistratedBy().getId()
+        );
+        if (existingProduct.isPresent() && !existingProduct.get().getId().equals(product.getId())) {
             throw new ProductException("Ya existe un producto con este código.");
         }
     }
@@ -156,7 +161,7 @@ public class ProductService {
      * Aplica los datos del DTO a una entidad existente.
      */
     private void updateEntity(Product product, ProductRequestDTO productRequest) {
-        product.setCode(productRequest.getCode());
+        product.setCode(normalizeCode(productRequest.getCode()));
         product.setName(productRequest.getName());
         product.setDescription(productRequest.getDescription());
         product.setSalePrice(productRequest.getSalePrice());
@@ -171,6 +176,13 @@ public class ProductService {
                 });
 
         product.setBrand(brand);
+    }
+
+    private String normalizeCode(String code) {
+        if (code == null || code.isBlank()) {
+            return null;
+        }
+        return code.trim();
     }
 
     /**

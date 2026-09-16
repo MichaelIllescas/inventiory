@@ -8,6 +8,7 @@ const EditExpenseModal = ({ isOpen, onClose, data, onSubmit }) => {
     amount: "",
     paymentMethod: "",
     description: "",
+    date: "",
   });
 
   const [toast, setToast] = useState({
@@ -19,7 +20,10 @@ const EditExpenseModal = ({ isOpen, onClose, data, onSubmit }) => {
 
   useEffect(() => {
     if (data && Object.keys(data).length > 0) {
-      setFormData(data);
+      setFormData({
+        ...data,
+        date: toInputDate(data.date),
+      });
     }
   }, [data]);
 
@@ -38,7 +42,10 @@ const EditExpenseModal = ({ isOpen, onClose, data, onSubmit }) => {
       });
       return;
     }
-    onSubmit(formData);
+    onSubmit({
+      ...formData,
+      date: toApiDate(formData.date),
+    });
     onClose();
   };
 
@@ -51,6 +58,17 @@ const EditExpenseModal = ({ isOpen, onClose, data, onSubmit }) => {
         <Modal.Body>
           {data ? (
             <Form onSubmit={handleSubmit}>
+              <Form.Group className="mb-3">
+                <Form.Label>Fecha del gasto</Form.Label>
+                <Form.Control
+                  type="date"
+                  name="date"
+                  value={formData.date || ""}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+
               <Form.Group className="mb-3">
                 <Form.Label>Tipo de Gasto</Form.Label>
                 <Form.Select
@@ -135,3 +153,18 @@ const EditExpenseModal = ({ isOpen, onClose, data, onSubmit }) => {
 };
 
 export default EditExpenseModal;
+
+const toInputDate = (date) => {
+  if (!date) return "";
+  if (date.includes("/")) {
+    const [day, month, year] = date.split("/");
+    return `${year}-${month}-${day}`;
+  }
+  return date;
+};
+
+const toApiDate = (date) => {
+  if (!date) return date;
+  const [year, month, day] = date.split("-");
+  return `${day}/${month}/${year}`;
+};
