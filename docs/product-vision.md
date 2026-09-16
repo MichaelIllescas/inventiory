@@ -1,4 +1,5 @@
 # Visión de producto
+---
 
 ## El problema
 
