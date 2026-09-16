@@ -17,7 +17,6 @@
     RefreshCcw,
     LucideTrendingUpDown,
     UserCheck,
-    ShoppingCart,
     ClipboardList,
     DollarSign,
     ShoppingBag ,
@@ -147,23 +146,8 @@ import { useRef } from "react";
                 <hr />
               </NavbarDropdown>
         
-              {/* buys managenent */}
-              <NavbarDropdown text="Compras" icon={ShoppingCart} dropdownId="dropdown-compra">
-                <hr />
-                <NavbarItem
-                  url="/buyRegister"
-                  icon={ShoppingCart}
-                  text="Registrar Compra"
-                   id="tour-compra"
-                />
-                <hr />
-                <NavbarItem
-                  url="/buistHistory"
-                  icon={List}
-                  text="Historial de Compras"
-                />
-                <hr />
-                <li className="mx-5">Otros Gastos  </li><hr />
+              {/* expenses management */}
+              <NavbarDropdown text="Gastos" icon={DollarSign} dropdownId="dropdown-gastos">
                 <NavbarItem
                   url="/expenseRegister"
                   icon={DollarSign}
@@ -175,7 +159,6 @@ import { useRef } from "react";
                   icon={List}
                   text="Lista de Gastos"
                 />
-          <hr />
               </NavbarDropdown>
         
               {/* Sales managenent */}

@@ -30,9 +30,8 @@ public class Product {
     /**
      * Código del producto (puede no ser único).
      */
-    @NotBlank(message = "El código del producto es obligatorio.")
     @Size(max = 50, message = "El código del producto no puede superar los 50 caracteres.")
-    @Column(nullable = false, unique = false, length = 50)
+    @Column(nullable = true, unique = false, length = 50)
     private String code;
 
     /**

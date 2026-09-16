@@ -8,13 +8,10 @@ import ProviderRegister from "../features/providers/pages/ProviderRegister";
 import ProvidersPage from "../features/providers/pages/ProvidersPage";
 import ProductRegister from "../features/products/pages/ProductRegister";
 import ProductPage from "../features/products/pages/ProductsPage";
-import UpdateStock from "../features/products/pages/StockUpdate";
 import ModifyPrice from "../features/products/pages/ModifyPrice";
 import ClientRegister from "../features/clients/pages/ClientRegister";
 import ClientsPage from "../features/clients/pages/ClientsPage";
-import ProductManagementTabs from "../features/buys/pages/ProductManagementTabs";
 import StockPage from "../features/stocks/pages/StockPage";
-import PurchasesPage from "../features/buys/pages/PurchasesPage";
 import ExpensesPage from "../features/expenses/pages/ExpensesPage";
 import ExpenseRegister from "../features/expenses/pages/ExpenseRegister";
 import SaleRegister from "../features/sales/pages/SaleRegister";
@@ -67,15 +64,12 @@ export const AppRoutes = () => {
         <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
         <Route path="/providerRegister" element={<ProtectedRoute element={<ProviderRegister/>} />} />
         <Route path="/providerList" element={<ProtectedRoute element={<ProvidersPage/>} />} />
-        <Route path="/productRegister" element={<ProtectedRoute element={<ProductManagementTabs/>} />} />
+        <Route path="/productRegister" element={<ProtectedRoute element={<ProductRegister/>} />} />
         <Route path="/productsList" element={<ProtectedRoute element={<ProductPage/>} />} />
-        <Route path="/updateStock" element={<ProtectedRoute element={<UpdateStock/>} />} />
         <Route path="/updatePrice" element={<ProtectedRoute element={<ModifyPrice/>} />} />
         <Route path="/clientRegister" element={<ProtectedRoute element={<ClientRegister/>} />} />
         <Route path="/clientsList" element={<ProtectedRoute element={<ClientsPage/>} />} />
-        <Route path="/buyRegister" element={<ProtectedRoute element={<ProductManagementTabs/>} />} />
         <Route path="/stocksList" element={<ProtectedRoute element={<StockPage/>} />} />
-        <Route path="/buistHistory" element={<ProtectedRoute element={<PurchasesPage/>} />} />
         <Route path="/expensesList" element={<ProtectedRoute element={<ExpensesPage/>} />} />
         <Route path="/expenseRegister" element={<ProtectedRoute element={<ExpenseRegister/>} />} />
         <Route path="/saleRegister" element={<ProtectedRoute element={<SaleRegister />} />} />

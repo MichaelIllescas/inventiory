@@ -3,6 +3,11 @@ package com.imperial_net.inventioryApp.products.controller;
 import com.imperial_net.inventioryApp.exceptions.ProductException;
 import com.imperial_net.inventioryApp.products.dto.*;
 import com.imperial_net.inventioryApp.products.service.ProductService;
+import com.imperial_net.inventioryApp.products.models.Product;
+import com.imperial_net.inventioryApp.auth.service.CookieService;
+import com.imperial_net.inventioryApp.stock.dto.StockMovementRequestDTO;
+import com.imperial_net.inventioryApp.stock.dto.StockMovementResponseDTO;
+import com.imperial_net.inventioryApp.stock.service.StockMovementService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +28,8 @@ import java.util.Map;
 public class ProductController {
 
     private final ProductService productService;
+    private final StockMovementService stockMovementService;
+    private final CookieService cookieService;
 
     /**
      * Registra un nuevo producto para el usuario autenticado.
@@ -85,22 +92,6 @@ public class ProductController {
     }
 
     /**
-     * Actualiza el stock de un producto.
-     *
-     * @param id                    ID del producto.
-     * @param productUpdateStockDTO datos de stock.
-     * @return mensaje de éxito.
-     */
-    @PatchMapping("/{id}/stock")
-    public ResponseEntity<?> updateStock(
-            @PathVariable Long id,
-            @RequestBody ProductUpdateStockDTO productUpdateStockDTO) {
-
-        productService.updateStock(id, productUpdateStockDTO);
-        return ResponseEntity.status(HttpStatus.OK).body("Stock actualizado correctamente");
-    }
-
-    /**
      * Modifica los precios de múltiples productos según los criterios especificados.
      *
      * @param updatePriceDTO DTO con los criterios de actualización.
@@ -142,6 +133,41 @@ public class ProductController {
     public ResponseEntity<List<StockLowDTO>> getLowStockProducts(HttpServletRequest request) {
         List<StockLowDTO> lowStockProducts = productService.findLowStockProducts(request);
         return ResponseEntity.ok(lowStockProducts);
+    }
+
+    @PostMapping("/{id}/stock-movements")
+    public ResponseEntity<StockMovementResponseDTO> registerStockMovement(
+            @PathVariable Long id,
+            @Valid @RequestBody StockMovementRequestDTO request,
+            HttpServletRequest httpRequest) {
+        var user = cookieService.getUserFromCookie(httpRequest)
+                .orElseThrow(() -> new ProductException("Usuario no autenticado."));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(stockMovementService.registerForUser(id, request, user));
+    }
+
+    @GetMapping("/{id}/stock-movements")
+    public ResponseEntity<List<StockMovementResponseDTO>> getStockMovements(
+            @PathVariable Long id,
+            HttpServletRequest httpRequest) {
+        var user = cookieService.getUserFromCookie(httpRequest)
+                .orElseThrow(() -> new ProductException("Usuario no autenticado."));
+        Product product = productService.getProductById(id);
+        if (product.getRegistratedBy() == null || !product.getRegistratedBy().getId().equals(user.getId())) {
+            throw new ProductException("El producto no pertenece al usuario autenticado.");
+        }
+        List<StockMovementResponseDTO> movements = stockMovementService.findByProduct(id).stream()
+                .map(movement -> new StockMovementResponseDTO(
+                        movement.getId(),
+                        product.getId(),
+                        movement.getQuantity(),
+                        movement.getMovementDate(),
+                        movement.getReason(),
+                        movement.getProvider() == null ? null : movement.getProvider().getId(),
+                        movement.getNote(),
+                        product.getStock()))
+                .toList();
+        return ResponseEntity.ok(movements);
     }
 
 

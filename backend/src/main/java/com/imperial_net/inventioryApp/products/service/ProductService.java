@@ -10,6 +10,8 @@ import com.imperial_net.inventioryApp.products.repository.ProductRepository;
 import com.imperial_net.inventioryApp.auth.service.CookieService;
 import com.imperial_net.inventioryApp.suscriptions.model.Subscription;
 import com.imperial_net.inventioryApp.users.model.User;
+import com.imperial_net.inventioryApp.stock.model.StockMovementReason;
+import com.imperial_net.inventioryApp.stock.service.StockMovementService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +34,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final CookieService cookieService;
     private final BrandRepository brandRepository;
+    private final StockMovementService stockMovementService;
 
     /**
      * Convierte un {@link Product} a {@link ProductResponseDTO}.
@@ -70,7 +73,8 @@ public class ProductService {
         User user = cookieService.getUserFromCookie(request)
                 .orElseThrow(() -> new ProductException("Usuario no autenticado. No se puede registrar el producto."));
 
-        if (productRepository.existsByCodeAndRegistratedBy_Id(productRequestDTO.getCode(), user.getId())) {
+        if (productRequestDTO.getCode() != null && !productRequestDTO.getCode().isBlank()
+                && productRepository.existsByCodeAndRegistratedBy_Id(productRequestDTO.getCode(), user.getId())) {
             throw new ProductException("Ya existe un producto con el código '" + productRequestDTO.getCode() + "'.");
         }
 
@@ -96,6 +100,12 @@ public class ProductService {
 
         if (this.validateNumberOfRecords(user)) {
             product = productRepository.save(product);
+            BigDecimal initialStock = productRequestDTO.getInitialStock() == null
+                    ? BigDecimal.ZERO : productRequestDTO.getInitialStock();
+            if (initialStock.compareTo(BigDecimal.ZERO) > 0) {
+                stockMovementService.register(product, initialStock, LocalDate.now(),
+                        StockMovementReason.INGRESO, null, user, "Stock inicial del producto");
+            }
             return convertToDto(product);
         } else {
             throw new ClientException("Ha alcanzado el límite de registros para el plan FREE. Si desea acceder a registros ilimitados, debe suscribirse al plan PRO");
@@ -133,6 +143,9 @@ public class ProductService {
      * Valida que no haya otro producto con el mismo código.
      */
     private void validateProductData(Long id, ProductRequestDTO productRequest) {
+        if (productRequest.getCode() == null || productRequest.getCode().isBlank()) {
+            return;
+        }
         Optional<Product> existingProduct = productRepository.findByCode(productRequest.getCode());
         if (existingProduct.isPresent() && !existingProduct.get().getId().equals(id)) {
             throw new ProductException("Ya existe un producto con este código.");
@@ -193,15 +206,6 @@ public class ProductService {
      */
     private double parseDoubleTwoDecimals(double value) {
         return Math.round(value * 100.0) / 100.0;
-    }
-
-    /**
-     * Actualiza el stock de un producto.
-     */
-    public void updateStock(Long id, ProductUpdateStockDTO productUpdateStockDTO) {
-        Product product = productRepository.findById(id).get();
-        product.setStock(productUpdateStockDTO.getStock());
-        productRepository.save(product);
     }
 
     /**

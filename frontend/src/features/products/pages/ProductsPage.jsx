@@ -6,6 +6,7 @@ import DataTable from "../../../components/DataTable";
 import { LoadingScreen } from "../../../components/LoadingScreen";
 import EditProductModal from "./EditProductModal";
 import ProductDetailsModal from "./ProductDetailsModal";
+import StockMovementModal from "./StockMovementModal";
 import ToastMessage from "../../../components/ToastMessage";
 import { Modal, Button } from "react-bootstrap";
 import { FaEye, FaEdit, FaToggleOn, FaToggleOff } from "react-icons/fa";
@@ -18,6 +19,7 @@ const ProductPage = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isMovementModalOpen, setIsMovementModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [toast, setToast] = useState({
     show: false,
@@ -48,6 +50,13 @@ const ProductPage = () => {
     if (!product) return;
     setSelectedProduct({ ...product });
     setIsConfirmModalOpen(true);
+  };
+
+  const handleRegisteredMovement = (result) => {
+    setProducts((current) => current.map((product) =>
+      product.id === result.productId ? { ...product, stock: result.currentStock } : product
+    ));
+    setToast({ show: true, title: "Éxito", message: "Movimiento registrado correctamente", variant: "success" });
   };
 
   const handleToggleStatus = async () => {
@@ -146,7 +155,8 @@ const ProductPage = () => {
         <DataTable columns={columns} data={products || []} />
       </div>
       <EditProductModal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} productData={selectedProduct} onSubmit={handleSave} />
-      <ProductDetailsModal isOpen={isDetailsModalOpen} onClose={() => setIsDetailsModalOpen(false)} product={selectedProduct} />
+      <ProductDetailsModal isOpen={isDetailsModalOpen} onClose={() => setIsDetailsModalOpen(false)} product={selectedProduct} onOpenMovement={() => setIsMovementModalOpen(true)} />
+      <StockMovementModal show={isMovementModalOpen} product={selectedProduct} onClose={() => setIsMovementModalOpen(false)} onRegistered={handleRegisteredMovement} />
    
       <Modal show={isConfirmModalOpen} onHide={() => setIsConfirmModalOpen(false)} centered>
         <Modal.Header closeButton>

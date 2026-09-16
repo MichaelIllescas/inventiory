@@ -17,7 +17,6 @@ public class ProductRequestDTO {
     /**
      * Código único del producto.
      */
-    @NotBlank(message = "El código del producto es obligatorio.")
     @Size(max = 50, message = "El código del producto no puede superar los 50 caracteres.")
     private String code;
 
@@ -46,6 +45,12 @@ public class ProductRequestDTO {
      */
     @Min(value = 0, message = "El stock mínimo no puede ser negativo.")
     private BigDecimal minStock;
+
+    /**
+     * Stock inicial. Se registra como un movimiento INGRESO al crear el producto.
+     */
+    @DecimalMin(value = "0.0", message = "El stock inicial no puede ser negativo.")
+    private BigDecimal initialStock = BigDecimal.ZERO;
 
     /**
      * Categoría del producto (ej. Electrónica, Indumentaria, etc.).

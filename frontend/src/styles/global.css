@@ -72,6 +72,47 @@ html, body {
 
 main {
   flex: 1;
+  padding-top: 96px;
+}
+
+/* AOS queda desactivado: el contenido siempre se muestra sin transiciones. */
+[data-aos] {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+.required-mark {
+  display: inline-block;
+  margin-left: 0.15rem;
+  color: #c62828;
+  font-size: 1.15em;
+  font-weight: 900;
+  line-height: 1;
+  vertical-align: baseline;
+  position: relative;
+  top: -0.1em;
+}
+
+.required-fields-note {
+  color: #5f6670;
+  font-size: 0.9rem;
+}
+
+.stock-filter {
+  width: fit-content;
+  margin-left: auto;
+  margin-right: 1rem;
+}
+
+.stock-filter .btn {
+  min-width: 96px;
+  padding: 0.3rem 0.75rem;
+}
+
+.stock-filter .btn-outline-dark {
+  background-color: #ffffff;
+  color: #212529;
 }
 
 
