@@ -59,13 +59,17 @@ Esto permite leer y modificar una funcionalidad completa sin saltar entre carpet
 | Módulo | Responsabilidad |
 |---|---|
 | `products` | Catálogo de productos y marcas |
-| `purchases` | Compras a proveedores. Carga el stock y define el costo |
-| `sales` | Ventas, con cálculo de costo y ganancia |
-| `expenses` | Gastos operativos |
+| `purchases` | Compras a proveedores. Carga el stock y define el costo. **Derogado por [ADR 0001](adr/0001-stock-sin-costeo-fifo.md): pendiente de eliminación** |
+| `sales` | Ventas. El cálculo de costo y ganancia por venta se elimina por [ADR 0001](adr/0001-stock-sin-costeo-fifo.md) |
+| `expenses` | Gastos operativos, segmentados por categoría (enum fijo) |
 | `clients` | Clientes del comercio |
 | `providers` | Proveedores |
 | `companies` | Datos fiscales del negocio |
 | `users` | Usuarios, roles y recuperación de contraseña |
+
+El módulo de movimientos de stock reemplaza a `purchases`: registra entradas,
+ajustes, pérdidas y devoluciones sin importes. El detalle del modelo está en
+[domain-model.md](domain-model.md).
 
 **De consulta** (sin entidades propias; leen de los módulos de negocio):
 
@@ -120,6 +124,8 @@ src/
 
 Las features son: `auth`, `products`, `buys`, `sales`, `stocks`, `clients`, `providers`, `expenses`, `reports`, `dashboard`, `users`, `landing`.
 
+`buys` queda derogada por [ADR 0001](adr/0001-stock-sin-costeo-fifo.md): su reemplazo es el movimiento de stock dentro de `stocks`.
+
 ### Sesión
 
 `AuthContext` mantiene el usuario autenticado. Al montar, consulta `/auth/me`: si la cookie es válida el backend devuelve la sesión, si no, queda sin usuario. No hay token en `localStorage` — por diseño, para que un XSS no pueda robarlo.
@@ -135,7 +141,7 @@ Todo pasa por `config/axiosConfig.js`, que define la URL base desde `VITE_API_UR
 1. **Monorepo.** Backend y frontend evolucionan juntos y casi todo cambio funcional toca los dos. Un repositorio único mantiene el cambio en un solo commit y la documentación sincronizada con el código.
 2. **Agrupación por feature.** Sobre agrupar por capa técnica, porque el trabajo diario es por funcionalidad.
 3. **JWT en cookie httpOnly.** Sobre `localStorage`, para que el token quede fuera del alcance de JavaScript.
-4. **Costeo FIFO sobre lotes de compra.** Cada compra es un lote con su propio precio y stock restante; una venta consume los lotes más antiguos primero. Es lo que permite calcular la rentabilidad real. Detalle en [domain-model.md](domain-model.md).
+4. **Stock sin costeo.** El producto tiene precio de venta y ningún costo; el stock se mueve sin importes y la rentabilidad se calcula a nivel negocio como ventas menos gastos. Deroga el costeo FIFO sobre lotes de compra que regía antes. El porqué está en [ADR 0001](adr/0001-stock-sin-costeo-fifo.md) y el modelo en [domain-model.md](domain-model.md).
 
 ## Limitaciones conocidas
 
@@ -150,6 +156,7 @@ Registradas para que no se descubran de nuevo. Cada una debería convertirse en 
 | **Cobertura de tests** | Tres archivos de test en todo el backend. El cálculo FIFO, que es el núcleo del negocio, no está cubierto. |
 | **Despliegue** | Hay `Dockerfile` para el backend, pero no `docker-compose.yml`, así que nada inyecta todavía las variables de entorno de producción. |
 | **Tipado en frontend** | JavaScript sin tipos en unos 160 archivos. |
+| **Costeo FIFO todavía en el código** | [ADR 0001](adr/0001-stock-sin-costeo-fifo.md) derogó el costeo por lotes, pero el código aún implementa `purchases`, la feature `buys` y la ganancia por producto. Falta la eliminación y la migración de lotes a movimientos de stock. |
 
 ## Documentos relacionados
 

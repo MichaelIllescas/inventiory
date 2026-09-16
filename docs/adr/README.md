@@ -34,4 +34,4 @@ Qué se gana, qué se pierde y qué queda pendiente como resultado.
 
 | ADR | Título | Estado |
 |---|---|---|
-| — | _Sin decisiones registradas todavía_ | — |
+| [0001](0001-stock-sin-costeo-fifo.md) | Stock sin costeo: el precio es de venta y la rentabilidad es del negocio | Aceptado |

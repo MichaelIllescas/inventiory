@@ -10,8 +10,9 @@ Eso produce tres problemas concretos, todos los días:
 
 - **No se sabe qué hay.** Para saber si queda un producto hay que ir a mirar. El
   conteo real solo existe cuando alguien lo cuenta.
-- **No se sabe qué deja plata.** Se vende mucho de algo y poco de otra cosa, pero
-  nadie sabe cuál de los dos deja ganancia. El precio se pone "a ojo".
+- **No se sabe si el mes cerró bien.** Entra plata por las ventas y sale por los
+  proveedores, los sueldos, el alquiler y los servicios, pero nadie suma las dos
+  columnas. El resultado del mes es una sensación.
 - **Se pierde venta.** Los productos que más rotan se terminan sin aviso. El dueño
   se entera cuando el cliente ya se fue.
 
@@ -56,7 +57,9 @@ no. Cambiarlo requiere un ADR que explique por qué.
 Inventiory es un éxito a seis meses si, en los comercios que lo usan:
 
 - El dueño **sabe cuánto stock tiene sin ir a contarlo** al depósito.
-- El dueño **sabe qué productos le dejan ganancia** y cuáles no.
+- El dueño **sabe si el negocio dio resultado** en el mes: cuánto vendió, cuánto
+  gastó y en qué se le fue la plata.
+- El dueño **sabe qué productos vende** y cuáles no se mueven.
 - **Dejó de quedarse sin los productos que más vende**, porque el sistema avisa
   antes.
 - **Abandonó el cuaderno.** No lo usa "además del sistema": lo dejó de usar.
@@ -72,26 +75,35 @@ comercio vuelve al papel.
 ### Registrar una venta
 
 El cliente deja productos en el mostrador. El dueño abre la venta, agrega cada
-producto **escaneando el código de barras o buscándolo por nombre**, el total se
-calcula solo, cobra y confirma. El stock de esos productos baja automáticamente.
+producto **escaneando el código de barras o buscándolo por nombre** —el mismo
+campo de búsqueda resuelve las dos cosas—, el total se calcula solo, cobra y
+confirma. El stock de esos productos baja automáticamente.
 
 Lo que tiene que estar resuelto:
 
 - Si el producto **no está cargado**, el dueño lo crea en el momento, sin salir de
   la venta ni perder lo que ya agregó.
+- El **código de barras es opcional**. Hay rubros que no lo tienen —indumentaria,
+  sobre todo— y obligar a inventar un código es obligar a ensuciar los datos. El
+  único dato de identidad obligatorio es el nombre.
 - Si **no hay stock suficiente**, el sistema avisa pero **no bloquea**: la venta
   real ya ocurrió y el papel nunca le habría impedido venderla.
 - Sacar o corregir un ítem antes de confirmar tiene que ser inmediato.
 
-### Reponer stock
+### Actualizar el stock
 
 Llega mercadería del proveedor. El dueño busca cada producto y carga la cantidad
-que entró, junto con el costo al que la compró. El stock sube.
+que entró, con la fecha y el proveedor si quiere anotarlo. El stock sube. **No se
+carga plata en este paso**: lo que se pagó, si se pagó, se registra como gasto.
 
 Lo que tiene que estar resuelto:
 
-- El **costo puede haber cambiado** desde la última compra. El sistema lo registra
-  sin pisar el historial, porque de ahí sale la ganancia real.
+- El mismo flujo cubre todo lo que mueve el stock sin ser una venta: **entrada de
+  mercadería, ajuste por conteo, rotura o pérdida y devolución**. Cada movimiento
+  queda con su motivo, así el historial explica por qué el número es el que es.
+- El producto tiene **un solo precio, el de venta**. No se le pide al dueño un
+  costo que no tiene a mano, y el precio se puede actualizar cuando cambia sin que
+  eso altere las ventas ya registradas.
 
 ### Saber qué se está por acabar
 
@@ -102,6 +114,22 @@ Lo que tiene que estar resuelto:
 
 - Cada producto tiene un **mínimo** definido por el dueño, no calculado por el
   sistema.
+
+### Saber si el mes cerró bien
+
+El dueño registra lo que paga —proveedores, sueldos, alquiler, servicios,
+impuestos— eligiendo una **categoría de una lista fija**, y el sistema le muestra
+el resultado del período: cuánto vendió, cuánto gastó y en qué categoría se le fue
+la plata.
+
+Lo que tiene que estar resuelto:
+
+- La rentabilidad es **del negocio, no del producto**: ventas del período menos
+  gastos del período. Deliberadamente no hay margen por producto, porque exigiría
+  cargar el costo de cada unidad que entra.
+- Las categorías las define el sistema, no el usuario. Una lista corta y estable es
+  lo que permite comparar un mes contra otro; si cada comercio inventa las suyas,
+  el análisis deja de tener sentido.
 
 ## Roles
 
