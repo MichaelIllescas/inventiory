@@ -26,11 +26,14 @@ El índice completo está en [docs/README.md](docs/README.md). Puntos de entrada
 
 Requisitos: JDK 17, Node 18+, MySQL 8.
 
+Cada proyecto tiene su propio archivo de variables de entorno:
+
 ```bash
-cp .env.example .env
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
 ```
 
-Completar el `.env` con las credenciales antes de levantar nada.
+Completarlos antes de levantar nada.
 
 ### Backend
 
@@ -54,4 +57,13 @@ cd frontend && npm install && npm run dev
 | Producción | `backend/src/main/resources/application-prod.properties` | Sí (usa variables de entorno) |
 | Plantilla | `backend/src/main/resources/application-example.properties` | Sí |
 
-Los valores sensibles nunca se escriben en un `.properties`: se inyectan como variables de entorno definidas en `.env`.
+Los valores sensibles nunca se escriben en un `.properties`: se inyectan como variables de entorno definidas en `backend/.env`.
+
+### Variables de entorno
+
+| Archivo | Contenido | Secreto |
+|---|---|---|
+| `backend/.env` | Base de datos, JWT, SMTP | Sí. Nunca sale del servidor |
+| `frontend/.env` | `VITE_API_URL` | No. Queda incrustado en el bundle y es visible desde el navegador |
+
+Están separados a propósito: todo lo que empieza con `VITE_` viaja al navegador, así que un secreto en `frontend/.env` es un secreto publicado.

@@ -1,10 +1,10 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:8080', // Cambia esto a la URL base de tu API
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080',
   withCredentials: true, // Permitir el envío de cookies y credenciales
   headers: {
-    'Content-Type': 'application/json', // Cambia esto si necesitas otros encabezados
+    'Content-Type': 'application/json',
   },
 });
 
