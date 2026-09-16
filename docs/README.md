@@ -14,7 +14,7 @@ Toda la documentación vive en el repositorio, en Markdown, y se versiona junto 
 | Documento | Contenido | Estado |
 |---|---|---|
 | [architecture.md](architecture.md) | Stack, módulos, estructura de carpetas | ✅ Escrito |
-| [domain-model.md](domain-model.md) | Entidades, relaciones y reglas de negocio | ⏳ Pendiente |
+| [domain-model.md](domain-model.md) | Entidades, relaciones y reglas de negocio | ✅ Escrito |
 | [database.md](database.md) | Esquema, índices y migraciones | ⏳ Pendiente |
 | [setup.md](setup.md) | Cómo levantar el proyecto localmente | ⏳ Pendiente |
 
@@ -22,7 +22,7 @@ Toda la documentación vive en el repositorio, en Markdown, y se versiona junto 
 
 | Documento | Contenido | Estado |
 |---|---|---|
-| [adr/](adr/) | Registro de decisiones de arquitectura (ADR) | ⏳ Pendiente |
+| [adr/](adr/) | Registro de decisiones de arquitectura (ADR) | ✅ 1 decisión registrada |
 
 ---
 
