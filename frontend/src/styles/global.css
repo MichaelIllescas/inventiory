@@ -1,0 +1,123 @@
+:root {
+  /* 🎨 Colores refinados */
+  --primary-color: #1b2b41; /* Azul oscuro confiable */
+  --secondary-color: #e2e6ed; /* Azul grisáceo para la tarjeta */
+  --accent-color: #13753e; /* Verde oscuro más sobrio */
+
+  /* 🎨 Hover */
+  --primary-hover: #23344d;
+  --secondary-hover: #3b4d67;
+  --accent-hover: #1b4a33;
+
+  /* 🎨 Texto */
+  --text-primary: #f0f0f0; /* Blanco neutro */
+  --text-secondary: #b0b8c3; /* Gris claro */
+  --text-accent: #60c79e; /* Verde más suave para enlaces */
+  
+  /* 🖋 Tipografía */
+  --font-primary: "Inter", sans-serif;
+  --font-secondary: "Merriweather", serif;
+}
+
+
+body {
+  /* background-color: var(--primary-color); */
+  background-image: url('../assets/img/fondo.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: repeat;
+  background-attachment: fixed;
+  background-blend-mode:  darken;
+  
+  color: var(--text-primary);
+  font-family: var(--font-primary);
+  font-size: 18px;
+  line-height: 1.5;
+  font-family: "Grape Nuts";
+  font-weight: 400;
+  font-style: normal;
+
+  font-family: "Sour Gummy", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+    overflow-x: hidden;
+}
+
+.card{
+  background-color: var(--secondary-color);
+  box-shadow: 1px 1px 10px 1px rgb(73, 71, 71) inset;
+
+}
+
+.btn-confirm{
+  background-color: var(--accent-color);
+  font-weight: bold;
+  color: var(--text-primary);
+
+}
+.btn-confirm:hover{
+  background-color: var(--accent-hover);
+  color: var(--text-primary);
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+
+.rotate-center {
+  animation: rotate-center 2s cubic-bezier(0.15, 0.85, 0.45, 1) infinite;
+}
+
+@keyframes rotate-center {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+  /* pages sales */
+
+.div-filter input{
+  margin: 0 10px 0 0;
+}
+@media (max-width: 576px) {
+  
+  .div-filter{
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+  
+  }
+  .div-filter div{
+    flex-wrap: wrap;
+  }
+  .div-btn-filter{
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .div-inputs-filter{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+  
+  }
+ 
+}

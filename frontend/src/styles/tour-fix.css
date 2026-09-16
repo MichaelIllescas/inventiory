@@ -1,0 +1,30 @@
+/* Estilos para que el tooltip centrado se vea bien en móviles */
+.react-joyride__tooltip {
+    max-width: 90vw !important;
+    width: auto !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    box-sizing: border-box;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+  
+  /* En móviles, centrar y achicar */
+  @media (max-width: 768px) {
+    .react-joyride__tooltip {
+      left: 50% !important;
+      top: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      max-width: 90vw !important;
+      width: 90vw !important;
+      font-size: 0.95rem;
+      background-color: darkgreen;
+    }
+  
+    .react-joyride__tooltip__arrow {
+      display: none !important; /* opcional si no apunta a ningún target */
+    }
+  }
+  
