@@ -7,6 +7,8 @@ package com.imperial_net.inventioryApp.clients.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 public class ClientResponseDTO {
@@ -50,6 +52,8 @@ public class ClientResponseDTO {
      * Dirección del cliente.
      */
     private String address;
+
+    private LocalDate birthDate;
 
     /**
      * Nombre del usuario que registró al cliente.

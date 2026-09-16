@@ -15,6 +15,7 @@ const ClientRegister = () => {
     phone: "",
     email: "",
     address: "",
+    birthDate: "",
   });
 
   const handleChange = (e) => {
@@ -35,6 +36,7 @@ const ClientRegister = () => {
         phone: "",
         email: "",
         address: "",
+        birthDate: "",
       });
 
       setTimeout(() => {
@@ -54,36 +56,47 @@ const ClientRegister = () => {
         </h2>
 
         <form onSubmit={handleSubmit} className="p-4">
+          <p className="required-fields-note text-center mb-4">Los campos marcados con <span className="required-mark">*</span> son obligatorios.</p>
           <div className="row">
-            {/* Primera columna */}
             <div className="col-md-6">
-              <label htmlFor="name" className="form-label">Nombre:</label>
+              <label htmlFor="name" className="form-label">Nombre: <span className="required-mark">*</span></label>
               <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} required className="form-control" placeholder="Ej.: Juan" />
+            </div>
 
-              <label htmlFor="lastname" className="form-label mt-3">Apellido:</label>
+            <div className="col-md-6">
+              <label htmlFor="lastname" className="form-label">Apellido: <span className="required-mark">*</span></label>
               <input type="text" name="lastname" id="lastname" value={formData.lastname} onChange={handleChange} required className="form-control" placeholder="Ej.: Pérez" />
+            </div>
 
-              <label htmlFor="documentNumber" className="form-label mt-3">Número de Documento:</label>
+            <div className="col-md-6 mt-3">
+              <label htmlFor="documentNumber" className="form-label mt-3">Número de Documento: <span className="required-mark">*</span></label>
               <input type="text" name="documentNumber" id="documentNumber" value={formData.documentNumber} onChange={handleChange} required className="form-control" placeholder="Ej.: 12345678" />
             </div>
 
-            {/* Segunda columna */}
-            <div className="col-md-6">
-              <label htmlFor="laxId" className="form-label">Cuit/Cuil</label>
+            <div className="col-md-6 mt-3">
+              <label htmlFor="laxId" className="form-label mt-3">Cuit/Cuil:</label>
               <input type="text" name="laxId" id="laxId" value={formData.laxId} onChange={handleChange}  className="form-control" placeholder="Ej.: 987654" />
-
-              <label htmlFor="phone" className="form-label mt-3">Teléfono:</label>
-              <input type="text" name="phone" id="phone" value={formData.phone} onChange={handleChange} required className="form-control" placeholder="Ej.: 011-1234567" />
-
-              <label htmlFor="email" className="form-label mt-3">Email:</label>
-              <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} required className="form-control" placeholder="Ej.: cliente@example.com" />
             </div>
-          </div>
 
-          {/* Dirección y Botón */}
-          <div className="mt-3">
-            <label htmlFor="address" className="form-label">Dirección:</label>
-            <input type="text" name="address" id="address" value={formData.address} onChange={handleChange} required className="form-control" placeholder="Ej.: Calle Falsa 123" />
+            <div className="col-md-6 mt-3">
+              <label htmlFor="phone" className="form-label mt-3">Teléfono:</label>
+              <input type="text" name="phone" id="phone" value={formData.phone} onChange={handleChange} className="form-control" placeholder="Ej.: 011-1234567" />
+            </div>
+
+            <div className="col-md-6 mt-3">
+              <label htmlFor="email" className="form-label mt-3">Email:</label>
+              <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} className="form-control" placeholder="Ej.: cliente@example.com" />
+            </div>
+
+            <div className="col-md-6 mt-3">
+              <label htmlFor="birthDate" className="form-label mt-3">Fecha de nacimiento:</label>
+              <input type="date" name="birthDate" id="birthDate" value={formData.birthDate} onChange={handleChange} className="form-control" />
+            </div>
+
+            <div className="col-md-6 mt-3">
+              <label htmlFor="address" className="form-label mt-3">Dirección:</label>
+              <input type="text" name="address" id="address" value={formData.address} onChange={handleChange} className="form-control" placeholder="Ej.: Calle Falsa 123" />
+            </div>
           </div>
 
           <div className="text-center mt-4 pt-3">

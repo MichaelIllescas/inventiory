@@ -42,7 +42,7 @@ public class Provider {
     /**
      * CUIT o CUIL (11 dígitos).
      */
-    @Pattern(regexp = "\\d{11}", message = "El CUIT/CUIL debe contener 11 dígitos numéricos.")
+    @Pattern(regexp = "^$|\\d{11}", message = "El CUIT/CUIL debe contener 11 dígitos numéricos.")
     private String taxId;
 
     /**
@@ -55,7 +55,7 @@ public class Provider {
     /**
      * Teléfono del proveedor.
      */
-    @Pattern(regexp = "\\+?\\d{7,15}", message = "El teléfono debe contener entre 7 y 15 dígitos numéricos, opcionalmente con un '+' al inicio.")
+    @Pattern(regexp = "^$|\\+?\\d{7,15}", message = "El teléfono debe contener entre 7 y 15 dígitos numéricos, opcionalmente con un '+' al inicio.")
     private String phone;
 
     /**

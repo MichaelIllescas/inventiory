@@ -8,6 +8,7 @@ import ToastMessage from "../../../components/ToastMessage";
 import useToggleClient from "../api/useToggleClient";
 import { Modal, Button } from "react-bootstrap";
 import SalesDetailsModal from "./SalesDetailsModal"; // Importamos el modal de detalles
+import { formatDate } from "../../../shared/helpers/formatDate";
 
 
 const ClientsPage = () => {
@@ -229,6 +230,7 @@ const handleShowPurchases = (client) => {
             <ul className="list-unstyled">
               <li className="mb-2"><strong>Documento:</strong> {selectedClientDetails.documentNumber}</li>
               <li className="mb-2"><strong>Nombre:</strong> {selectedClientDetails.name} {selectedClientDetails.lastname}</li>
+              <li className="mb-2"><strong>Fecha de nacimiento:</strong> {formatDate(selectedClientDetails.birthDate) || "No informada"}</li>
               <li className="mb-2"><strong>Fecha de Registro:</strong> {selectedClientDetails.registrationDate}</li>
             </ul>
           </div>

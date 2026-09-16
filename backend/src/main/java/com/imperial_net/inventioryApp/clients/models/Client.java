@@ -63,7 +63,7 @@ public class Client {
     /**
      * Teléfono del cliente (entre 6 y 15 dígitos, opcionalmente con '+').
      */
-    @Pattern(regexp = "\\+?\\d{6,15}", message = "El teléfono debe contener entre 6 y 15 dígitos numéricos, opcionalmente con un '+' al inicio.")
+    @Pattern(regexp = "^$|\\+?\\d{6,15}", message = "El teléfono debe contener entre 6 y 15 dígitos numéricos, opcionalmente con un '+' al inicio.")
     private String phone;
 
     /**
@@ -71,6 +71,9 @@ public class Client {
      */
     @Size(max = 255, message = "La dirección no puede superar los 255 caracteres.")
     private String address;
+
+    @Column(name = "birth_date")
+    private LocalDate birthDate;
 
     /**
      * Usuario que creó el cliente (relación many-to-one).

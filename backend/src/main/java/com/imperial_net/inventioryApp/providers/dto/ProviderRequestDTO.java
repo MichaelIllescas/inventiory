@@ -26,7 +26,7 @@ public class ProviderRequestDTO {
     /**
      * CUIT o CUIL del proveedor (11 dígitos).
      */
-    @Pattern(regexp = "\\d{11}", message = "El CUIT/CUIL debe contener 11 dígitos numéricos.")
+    @Pattern(regexp = "^$|\\d{11}", message = "El CUIT/CUIL debe contener 11 dígitos numéricos.")
     private String taxId;
 
     /**
@@ -39,7 +39,7 @@ public class ProviderRequestDTO {
     /**
      * Teléfono de contacto (entre 7 y 15 dígitos numéricos).
      */
-    @Pattern(regexp = "\\+?\\d{7,15}", message = "El teléfono debe contener entre 7 y 15 dígitos numéricos.")
+    @Pattern(regexp = "^$|\\+?\\d{7,15}", message = "El teléfono debe contener entre 7 y 15 dígitos numéricos.")
     private String phone;
 
     /**

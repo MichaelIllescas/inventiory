@@ -58,19 +58,22 @@ const ProviderRegister = () => {
           <Truck size={24} className="me-2" />
           Registrar Proveedor
         </h2>
+        <p className="required-fields-note text-center mb-2">
+          Los campos marcados con <span className="required-mark">*</span> son obligatorios.
+        </p>
 
         <form onSubmit={handleSubmit} className="p-4">
           <div className="row">
             {/* Primera columna */}
             <div className="col-md-6">
-              <label htmlFor="name" className="form-label">Nombre: </label>
+              <label htmlFor="name" className="form-label">Nombre: <span className="required-mark">*</span></label>
               <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} required className="form-control" placeholder="Ej.: Imperial-net Solutions S.A " />
 
               <label htmlFor="taxId" className="form-label mt-3">CUIT/CUIL:</label>
-              <input type="text" name="taxId" id="taxId" value={formData.taxId} onChange={handleChange} required className="form-control" placeholder="Ej.: 20-37757084-8"/>
+              <input type="text" name="taxId" id="taxId" value={formData.taxId} onChange={handleChange} className="form-control" placeholder="Ej.: 20-37757084-8"/>
 
               <label htmlFor="address" className="form-label mt-3">Dirección:</label>
-              <input type="text" name="address" id="address" value={formData.address} onChange={handleChange} required className="form-control" placeholder="Ej.: Dorrego Nro. 123, CABA" />
+              <input type="text" name="address" id="address" value={formData.address} onChange={handleChange} className="form-control" placeholder="Ej.: Dorrego Nro. 123, CABA" />
 
               <label htmlFor="website" className="form-label mt-3">Sitio Web:</label>
               <input type="text" name="website" id="website" value={formData.website} onChange={handleChange} className="form-control" placeholder="Ej.: www.imperial-net.com"/>
@@ -79,13 +82,13 @@ const ProviderRegister = () => {
             {/* Segunda columna */}
             <div className="col-md-6">
               <label htmlFor="businessName" className="form-label">Nombre Comercial:</label>
-              <input type="text" name="businessName" id="businessName" value={formData.businessName} onChange={handleChange} required className="form-control" placeholder="Ej.: Imperial-net" />
+              <input type="text" name="businessName" id="businessName" value={formData.businessName} onChange={handleChange} className="form-control" placeholder="Ej.: Imperial-net" />
 
               <label htmlFor="phone" className="form-label mt-3">Teléfono:</label>
-              <input type="text" name="phone" id="phone" value={formData.phone} onChange={handleChange} required className="form-control" placeholder="Ej.: 011-1122554" />
+              <input type="text" name="phone" id="phone" value={formData.phone} onChange={handleChange} className="form-control" placeholder="Ej.: 011-1122554" />
 
               <label htmlFor="email" className="form-label mt-3">Email:</label>
-              <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} required className="form-control" placeholder="Ej.: info@Imperial-net.com"/>
+              <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} className="form-control" placeholder="Ej.: info@Imperial-net.com"/>
 
               <label htmlFor="contactPerson" className="form-label mt-3">Persona de Contacto:</label>
               <input type="text" name="contactPerson" id="contactPerson" value={formData.contactPerson} onChange={handleChange} className="form-control" placeholder="Persona de referencia dentro de la empresa."/>

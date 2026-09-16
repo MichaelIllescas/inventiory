@@ -1,0 +1,2 @@
+ALTER TABLE clients
+    ADD COLUMN birth_date DATE NULL;

@@ -65,7 +65,6 @@ const EditClientModal = ({ isOpen, onClose, data, onSubmit }) => {
               name="laxId"
               value={formData.laxId || ""}
               onChange={handleChange}
-              required
             />
           </Form.Group>
 
@@ -76,7 +75,6 @@ const EditClientModal = ({ isOpen, onClose, data, onSubmit }) => {
               name="phone"
               value={formData.phone || ""}
               onChange={handleChange}
-              required
             />
           </Form.Group>
 
@@ -87,7 +85,16 @@ const EditClientModal = ({ isOpen, onClose, data, onSubmit }) => {
               name="address"
               value={formData.address || ""}
               onChange={handleChange}
-              required
+            />
+          </Form.Group>
+
+          <Form.Group className="mt-3">
+            <Form.Label>Fecha de nacimiento</Form.Label>
+            <Form.Control
+              type="date"
+              name="birthDate"
+              value={formData.birthDate || ""}
+              onChange={handleChange}
             />
           </Form.Group>
 
@@ -98,7 +105,6 @@ const EditClientModal = ({ isOpen, onClose, data, onSubmit }) => {
               name="email"
               value={formData.email || ""}
               onChange={handleChange}
-              required
             />
           </Form.Group>
 

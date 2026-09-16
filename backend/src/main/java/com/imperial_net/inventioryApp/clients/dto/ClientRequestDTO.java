@@ -8,6 +8,8 @@ import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 public class ClientRequestDTO {
@@ -48,7 +50,7 @@ public class ClientRequestDTO {
     /**
      * Número de teléfono. Entre 7 y 15 dígitos, con posibilidad de comenzar con '+'.
      */
-    @Pattern(regexp = "\\+?\\d{7,15}", message = "El teléfono debe contener entre 7 y 15 dígitos numéricos, opcionalmente con un '+' al inicio.")
+    @Pattern(regexp = "^$|\\+?\\d{7,15}", message = "El teléfono debe contener entre 7 y 15 dígitos numéricos, opcionalmente con un '+' al inicio.")
     private String phone;
 
     /**
@@ -56,4 +58,7 @@ public class ClientRequestDTO {
      */
     @Size(max = 255, message = "La dirección no puede superar los 255 caracteres.")
     private String address;
+
+    /** Fecha de nacimiento opcional. */
+    private LocalDate birthDate;
 }

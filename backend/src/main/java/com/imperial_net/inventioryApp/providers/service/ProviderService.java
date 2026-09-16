@@ -127,14 +127,14 @@ public class ProviderService {
     public Provider convertToEntity(ProviderRequestDTO dto) {
         Provider provider = new Provider();
         provider.setName(dto.getName());
-        provider.setBusinessName(dto.getBusinessName());
-        provider.setTaxId(dto.getTaxId());
-        provider.setEmail(dto.getEmail());
-        provider.setPhone(dto.getPhone());
-        provider.setAddress(dto.getAddress());
-        provider.setWebsite(dto.getWebsite());
-        provider.setContactPerson(dto.getContactPerson());
-        provider.setNotes(dto.getNotes());
+        provider.setBusinessName(nullIfBlank(dto.getBusinessName()));
+        provider.setTaxId(nullIfBlank(dto.getTaxId()));
+        provider.setEmail(nullIfBlank(dto.getEmail()));
+        provider.setPhone(nullIfBlank(dto.getPhone()));
+        provider.setAddress(nullIfBlank(dto.getAddress()));
+        provider.setWebsite(nullIfBlank(dto.getWebsite()));
+        provider.setContactPerson(nullIfBlank(dto.getContactPerson()));
+        provider.setNotes(nullIfBlank(dto.getNotes()));
         return provider;
     }
 
@@ -143,14 +143,18 @@ public class ProviderService {
      */
     private void updateEntity(Provider provider, ProviderRequestDTO dto) {
         provider.setName(dto.getName());
-        provider.setBusinessName(dto.getBusinessName());
-        provider.setTaxId(dto.getTaxId());
-        provider.setEmail(dto.getEmail());
-        provider.setPhone(dto.getPhone());
-        provider.setAddress(dto.getAddress());
-        provider.setWebsite(dto.getWebsite());
-        provider.setContactPerson(dto.getContactPerson());
-        provider.setNotes(dto.getNotes());
+        provider.setBusinessName(nullIfBlank(dto.getBusinessName()));
+        provider.setTaxId(nullIfBlank(dto.getTaxId()));
+        provider.setEmail(nullIfBlank(dto.getEmail()));
+        provider.setPhone(nullIfBlank(dto.getPhone()));
+        provider.setAddress(nullIfBlank(dto.getAddress()));
+        provider.setWebsite(nullIfBlank(dto.getWebsite()));
+        provider.setContactPerson(nullIfBlank(dto.getContactPerson()));
+        provider.setNotes(nullIfBlank(dto.getNotes()));
+    }
+
+    private String nullIfBlank(String value) {
+        return value == null || value.isBlank() ? null : value.trim();
     }
 
     /**

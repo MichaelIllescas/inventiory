@@ -44,7 +44,8 @@ public class ClientService {
             throw new ClientException("El número de documento '" + clientDto.getDocumentNumber() + "' ya está registrado.");
         }
 
-        if (clientRepository.findByEmailAndCreatedBy_Id(clientDto.getEmail(), user.getId()).isPresent()){
+        if (clientDto.getEmail() != null && !clientDto.getEmail().isBlank()
+                && clientRepository.findByEmailAndCreatedBy_Id(clientDto.getEmail(), user.getId()).isPresent()){
             throw new ClientException("El email '" + clientDto.getEmail() + "' ya está registrado en otro cliente.");
         }
 
@@ -112,16 +113,19 @@ public class ClientService {
                     throw new ClientException("El número de documento '" + clientRequest.getDocumentNumber() + "' ya está registrado.");
                 });
 
-        clientRepository.findByEmail(clientRequest.getEmail())
-                .filter(existingClient -> !existingClient.getId().equals(id))
-                .ifPresent(c -> {
-                    throw new ClientException("El email '" + clientRequest.getEmail() + "' ya está registrado.");
-                });
+        if (clientRequest.getEmail() != null && !clientRequest.getEmail().isBlank()) {
+            clientRepository.findByEmail(clientRequest.getEmail())
+                    .filter(existingClient -> !existingClient.getId().equals(id))
+                    .ifPresent(c -> {
+                        throw new ClientException("El email '" + clientRequest.getEmail() + "' ya está registrado.");
+                    });
+        }
 
-        if (clientRequest.getDocumentNumber().length() < 7 || clientRequest.getDocumentNumber().length() > 15) {
+        if (clientRequest.getDocumentNumber() == null || clientRequest.getDocumentNumber().length() < 7 || clientRequest.getDocumentNumber().length() > 15) {
             throw new ClientException("El número de documento debe contener entre 7 y 15 dígitos.");
         }
-        if (clientRequest.getPhone().length() < 7 || clientRequest.getPhone().length() > 16) {
+        if (clientRequest.getPhone() != null && !clientRequest.getPhone().isBlank()
+                && (clientRequest.getPhone().length() < 7 || clientRequest.getPhone().length() > 16)) {
             throw new ClientException("El teléfono debe contener entre 6 y 15 dígitos .");
         }
     }
@@ -143,6 +147,7 @@ public class ClientService {
         dto.setEmail(client.getEmail());
         dto.setPhone(client.getPhone());
         dto.setAddress(client.getAddress());
+        dto.setBirthDate(client.getBirthDate());
         dto.setCreatedBy(client.getCreatedBy() != null ? client.getCreatedBy().getFirstName() + " " + client.getCreatedBy().getLastName() : null);
         dto.setRegistrationDate(client.getRegistrationDate().format(formatter).toString());
         dto.setUpdateDate((client.getUpdateDate() != null) ? client.getUpdateDate().format(formatter).toString() : null);
@@ -161,10 +166,11 @@ public class ClientService {
         client.setName(dto.getName());
         client.setLastname(dto.getLastname());
         client.setDocumentNumber(dto.getDocumentNumber());
-        client.setLaxId(dto.getLaxId());
-        client.setEmail(dto.getEmail());
-        client.setPhone(dto.getPhone());
-        client.setAddress(dto.getAddress());
+        client.setLaxId(nullIfBlank(dto.getLaxId()));
+        client.setEmail(nullIfBlank(dto.getEmail()));
+        client.setPhone(nullIfBlank(dto.getPhone()));
+        client.setAddress(nullIfBlank(dto.getAddress()));
+        client.setBirthDate(dto.getBirthDate());
         client.setActive(true);
         return client;
     }
@@ -179,10 +185,15 @@ public class ClientService {
         client.setName(dto.getName());
         client.setLastname(dto.getLastname());
         client.setDocumentNumber(dto.getDocumentNumber());
-        client.setLaxId(dto.getLaxId());
-        client.setEmail(dto.getEmail());
-        client.setPhone(dto.getPhone());
-        client.setAddress(dto.getAddress());
+        client.setLaxId(nullIfBlank(dto.getLaxId()));
+        client.setEmail(nullIfBlank(dto.getEmail()));
+        client.setPhone(nullIfBlank(dto.getPhone()));
+        client.setAddress(nullIfBlank(dto.getAddress()));
+        client.setBirthDate(dto.getBirthDate());
+    }
+
+    private String nullIfBlank(String value) {
+        return value == null || value.isBlank() ? null : value.trim();
     }
 
     /**
