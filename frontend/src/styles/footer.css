@@ -1,7 +1,133 @@
-footer {
-    position: static;
-    bottom: 0;
-    width: 100%;
-    padding: 10px;
+/* 🦶 Footer de la aplicación */
+.app-footer {
+  width: 100%;
+  margin-top: 3rem;
+  color: #e9edf3;
+  background-color: rgba(18, 26, 38, 0.92);
+  backdrop-filter: blur(6px);
+  border-top: 3px solid var(--accent-color, #13753e);
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.app-footer__inner {
+  padding: 2rem 1rem 1rem;
+}
+
+/* 🧱 Grilla de columnas */
+.app-footer__grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+/* 🏷 Marca */
+.app-footer__brand-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.app-footer__brand-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.app-footer__tagline {
+  margin: 0.6rem 0 0;
+  max-width: 34ch;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #aab4c2;
+}
+
+/* 🔠 Títulos de columna */
+.app-footer__title {
+  margin: 0 0 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #8f9bab;
+}
+
+.app-footer__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* 🔗 Enlaces */
+.app-footer__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #d5dbe4;
+  font-size: 0.92rem;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.app-footer__link:hover,
+.app-footer__link:focus-visible {
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.app-footer__link--inline {
+  display: inline;
+  font-weight: 600;
+}
+
+.app-footer__link:focus-visible {
+  outline: 2px solid var(--accent-color, #13753e);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* 📜 Barra inferior */
+.app-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  color: #9aa5b4;
+  font-size: 0.82rem;
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .app-footer__grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
     text-align: center;
+  }
+
+  .app-footer__brand-head {
+    justify-content: center;
+  }
+
+  .app-footer__tagline {
+    margin-inline: auto;
+  }
+
+  .app-footer__list {
+    align-items: center;
+  }
+
+  .app-footer__bottom {
+    justify-content: center;
+    text-align: center;
+  }
 }

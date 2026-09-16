@@ -20,7 +20,7 @@
 }
 
 /* 🌐 Navbar principal */
-nav {
+nav.navbar {
   background-color: #e6e4e4;
   color: black;
   font-weight: bolder;
@@ -49,20 +49,47 @@ nav {
 
 /* 📂 Dropdown personalizado */
 .ul-dropdown {
-  background-image: url("../assets/img/job297-ploy-07c-blue-01.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-blend-mode: darken;
-  box-shadow: 1px 1px 10px 1px rgb(73, 71, 71) inset;
-  padding: 0px 15px;
+  background-color: #e6e4e4;
+  border: none;
+  border-radius: 0 0 14px 14px;
+  box-shadow: 0px 0px 5px 3px rgb(168, 167, 167) inset,
+    0px 6px 15px 1px rgba(22, 20, 20, 0.45);
+  padding: 8px 15px;
   min-width: 260px;
+  margin-top: 4px;
+}
+
+/* 🔗 Enlaces del dropdown: mismo color de texto que el nav */
+.ul-dropdown .nav-link {
+  color: #212529;
+  font-weight: bolder;
+  border-radius: 8px;
+  padding: 6px 10px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.ul-dropdown .nav-link:hover,
+.ul-dropdown .nav-link:focus {
+  background-color: #d5d3d3;
+  color: #000;
+}
+
+/* 📦 Íconos del dropdown en el mismo tono que el texto */
+.ul-dropdown .nav-link svg {
+  color: #212529;
+  stroke: currentColor;
+}
+
+/* ➖ Separadores discretos, acordes al fondo claro */
+.ul-dropdown hr {
+  margin: 4px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  opacity: 1;
 }
 
 /* 📄 Ítems del dropdown */
 .ul-dropdown li {
-  height: 20px;
+  min-height: 20px;
   margin: 0;
   padding: 0;
   display: flex;
