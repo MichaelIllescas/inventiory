@@ -1,0 +1,2 @@
+ALTER TABLE sale
+    ADD COLUMN observations VARCHAR(500) NULL;

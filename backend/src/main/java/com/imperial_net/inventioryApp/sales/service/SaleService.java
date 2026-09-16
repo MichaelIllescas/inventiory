@@ -56,6 +56,7 @@ public class SaleService {
         sale.setStatus(SaleStatus.CONFIRMED);
         sale.setDiscountApplied(saleDTO.getDiscountApplied() != null ? saleDTO.getDiscountApplied() : BigDecimal.ZERO);
         sale.setExtra_charge_percentage(saleDTO.getExtra_charge_percentage() != null ? saleDTO.getExtra_charge_percentage() : BigDecimal.ZERO);
+        sale.setObservations(saleDTO.getObservations());
         if (saleDTO.getClientId() != null) {
             sale.setCustomer(clientRepository.findById(saleDTO.getClientId())
                     .orElseThrow(() -> new RuntimeException("Cliente no encontrado")));
@@ -164,6 +165,7 @@ public class SaleService {
         dto.setPaymentMethod(sale.getPaymentMethod().getDescripcion());
         dto.setStatus(sale.getStatus().getDescripcion());
         dto.setExtra_charge_percentage(sale.getExtra_charge_percentage());
+        dto.setObservations(sale.getObservations());
 
         if (sale.getCustomer() != null) {
             dto.setClient(clientService.convertToDto(clientRepository.findById(sale.getCustomer().getId()).get()));

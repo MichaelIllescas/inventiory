@@ -40,4 +40,6 @@ public class SaleRequestDTO {
      * Este valor puede ser opcional y se inicializa en cero si no se aplica aumento.
      */
     private BigDecimal extra_charge_percentage = BigDecimal.ZERO;
+
+    private String observations;
 }

@@ -71,16 +71,22 @@ const ExpenseRegister = () => {
               <label htmlFor="expenseType" className="form-label">
                 Tipo de Gasto:
               </label>
-              <input
-                type="text"
+              <select
                 name="expenseType"
                 id="expenseType"
                 value={formData.expenseType}
                 onChange={handleChange}
                 required
-                className="form-control"
-                placeholder="Ej.: Compra de Materiales"
-              />
+                className="form-select"
+              >
+                <option value="">Seleccione un tipo de gasto</option>
+                <option value="PROVEEDORES">Proveedores</option>
+                <option value="EMPLEADOS">Empleados</option>
+                <option value="ALQUILER">Alquiler</option>
+                <option value="SERVICIOS">Servicios</option>
+                <option value="IMPUESTOS">Impuestos</option>
+                <option value="OTROS">Otros</option>
+              </select>
 
               <label htmlFor="amount" className="form-label mt-3">
                 Monto:
@@ -117,16 +123,21 @@ const ExpenseRegister = () => {
               <label htmlFor="paymentMethod" className="form-label">
                 Método de Pago:
               </label>
-              <input
-                type="text"
+              <select
                 name="paymentMethod"
                 id="paymentMethod"
                 value={formData.paymentMethod}
                 onChange={handleChange}
                 required
-                className="form-control"
-                placeholder="Ej.: Transferencia, Efectivo, Tarjeta"
-              />
+                className="form-select"
+              >
+                <option value="">Seleccione un método de pago</option>
+                <option value="EFECTIVO">Efectivo</option>
+                <option value="TARJETA">Tarjeta</option>
+                <option value="TRANSFERENCIA">Transferencia</option>
+                <option value="QR">QR</option>
+                <option value="OTROS">Otros</option>
+              </select>
 
               <label htmlFor="description" className="form-label mt-3">
                 Descripción:

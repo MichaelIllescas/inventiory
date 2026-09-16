@@ -5,6 +5,7 @@ import com.imperial_net.inventioryApp.users.model.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -66,7 +67,7 @@ public class Sale {
      * Este valor se calcula sumando los costos de cada producto vendido.
      */
     @NotNull
-    @Positive
+    @PositiveOrZero
     private BigDecimal totalCost;
 
     /**
@@ -112,6 +113,9 @@ public class Sale {
     @Enumerated(EnumType.STRING)
     @NotNull
     private SaleStatus status;
+
+    @Column(length = 500)
+    private String observations;
 
     /**
      * Método que asigna automáticamente la fecha y hora actual antes de persistir la venta.

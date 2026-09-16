@@ -11,13 +11,14 @@ import Select from "react-select";
 const SaleRegister = () => {
   const [cliente, setCliente] = useState(null);
   const [productsSelected, setProductsSelected] = useState([]); // Productos seleccionados por el usuario
-  const [descuento, setDescuento] = useState(0);
-  const [aumento, setAumento] = useState(0);
+  const [descuento, setDescuento] = useState(null);
+  const [aumento, setAumento] = useState(null);
   const [total, setTotal] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState("");
+  const [observations, setObservations] = useState("");
   const { registerSale, loading, error, success } = useRegisterSale();
   const [ajusteTipo, setAjusteTipo] = useState(null); // "discount" o "increase"
-  const [ajusteValor, setAjusteValor] = useState(0);
+  const [ajusteValor, setAjusteValor] = useState("");
  
 
   const handleRegisterSale = async () => {
@@ -31,21 +32,24 @@ const SaleRegister = () => {
 
     await registerSale({
       products: productsSelected,
-      discount: descuento,
+      discount: ajusteTipo === "discount" ? descuento : null,
       paymentMethod,
       clientId: cliente ? cliente.id : null,
-      extra_charge_percentage: aumento,
+      extra_charge_percentage: ajusteTipo === "increase" ? aumento : null,
+      observations: observations.trim() || null,
     });
   };
   useEffect(() => {
     if (success) {
       setCliente(null);
       setProductsSelected([]);
-      setDescuento(0);
-      setDescuento(0);
+      setDescuento(null);
+      setAumento(null);
       setTotal(0);
       setPaymentMethod("");
-      setAjusteValor(0);
+      setObservations("");
+      setAjusteValor("");
+      setAjusteTipo(null);
     }
   }, [success]); // Se ejecuta cuando `success` cambia
 
@@ -136,8 +140,8 @@ const SaleRegister = () => {
     setTotal(totalCalculado.toFixed(2));
   
     // Además, actualizamos los valores reales que se envían al backend
-    setDescuento((ajusteTipo === "discount" ? porcentaje : 0).toFixed(2));
-    setAumento((ajusteTipo === "increase" ? porcentaje : 0).toFixed(2));
+    setDescuento(ajusteTipo === "discount" ? porcentaje.toFixed(2) : null);
+    setAumento(ajusteTipo === "increase" ? porcentaje.toFixed(2) : null);
   };
   
 
@@ -295,7 +299,10 @@ const SaleRegister = () => {
       { value: "discount", label: "Descuento (%)" },
       { value: "increase", label: "Recargo (%)" },
     ]}
-    onChange={(option) => setAjusteTipo(option ? option.value : null)}
+    onChange={(option) => {
+      setAjusteTipo(option ? option.value : null);
+      if (!option) setAjusteValor("");
+    }}
     isClearable
     placeholder="Seleccione ajuste..."
     value={
@@ -308,14 +315,17 @@ const SaleRegister = () => {
     }
   />
 
-  <input
-    type="number"
-    className="form-control mt-2"
-    placeholder="Ingrese porcentaje (%)"
-    value={ajusteValor}
-    onChange={(e) => setAjusteValor(e.target.value)}
-    disabled={!ajusteTipo}
-  />
+  {ajusteTipo && (
+    <input
+      type="number"
+      min="0"
+      max="100"
+      className="form-control mt-2"
+      placeholder="Ingrese porcentaje (%)"
+      value={ajusteValor}
+      onChange={(e) => setAjusteValor(e.target.value)}
+    />
+  )}
 </div>
 
               <hr />
@@ -338,6 +348,17 @@ const SaleRegister = () => {
                   <option value="OTHER">Otro</option>
                 </select>
               </div>
+
+              <hr />
+              <h4 className="mt-3">Observaciones</h4>
+              <textarea
+                className="form-control"
+                rows="3"
+                value={observations}
+                onChange={(e) => setObservations(e.target.value)}
+                maxLength="500"
+                placeholder="Observaciones de la venta (opcional)"
+              />
 
               <hr />
               <div className="text-center">

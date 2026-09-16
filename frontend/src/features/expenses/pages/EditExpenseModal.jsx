@@ -53,13 +53,20 @@ const EditExpenseModal = ({ isOpen, onClose, data, onSubmit }) => {
             <Form onSubmit={handleSubmit}>
               <Form.Group className="mb-3">
                 <Form.Label>Tipo de Gasto</Form.Label>
-                <Form.Control
-                  type="text"
+                <Form.Select
                   name="expenseType"
                   value={formData.expenseType}
                   onChange={handleChange}
                   required
-                />
+                >
+                  <option value="">Seleccione un tipo de gasto</option>
+                  <option value="PROVEEDORES">Proveedores</option>
+                  <option value="EMPLEADOS">Empleados</option>
+                  <option value="ALQUILER">Alquiler</option>
+                  <option value="SERVICIOS">Servicios</option>
+                  <option value="IMPUESTOS">Impuestos</option>
+                  <option value="OTROS">Otros</option>
+                </Form.Select>
               </Form.Group>
 
               <Form.Group className="mb-3">
@@ -75,13 +82,19 @@ const EditExpenseModal = ({ isOpen, onClose, data, onSubmit }) => {
 
               <Form.Group className="mb-3">
                 <Form.Label>Método de Pago</Form.Label>
-                <Form.Control
-                  type="text"
+                <Form.Select
                   name="paymentMethod"
                   value={formData.paymentMethod}
                   onChange={handleChange}
                   required
-                />
+                >
+                  <option value="">Seleccione un método de pago</option>
+                  <option value="EFECTIVO">Efectivo</option>
+                  <option value="TARJETA">Tarjeta</option>
+                  <option value="TRANSFERENCIA">Transferencia</option>
+                  <option value="QR">QR</option>
+                  <option value="OTROS">Otros</option>
+                </Form.Select>
               </Form.Group>
 
               <Form.Group className="mb-3">

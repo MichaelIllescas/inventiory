@@ -6,7 +6,7 @@ const useRegisterSale = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const registerSale = async ({ products, discount, paymentMethod, clientId,  extra_charge_percentage  }) => {
+  const registerSale = async ({ products, discount, paymentMethod, clientId, extra_charge_percentage, observations }) => {
     setLoading(true);
     setError(null);
     setSuccess(false);
@@ -20,7 +20,8 @@ const useRegisterSale = () => {
         discountApplied: discount,
         paymentMethod,
         clientId: clientId || null, 
-        extra_charge_percentage 
+        extra_charge_percentage,
+        observations
       };
 
       await apiClient.post("/sales/register", saleData);

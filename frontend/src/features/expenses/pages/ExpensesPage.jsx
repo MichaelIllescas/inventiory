@@ -11,6 +11,7 @@ import ConfirmModal from "./ConfirmModal";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { es } from "date-fns/locale";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 const ExpensesPage = () => {
   const { expenses, fetchExpenses, loading, error } = useExpenses();
@@ -129,16 +130,16 @@ const ExpensesPage = () => {
             <button
               className="btn btn-primary btn-sm"
               onClick={() => handleEdit(row.original.id)}
-              style={{ width: "40px", borderRadius: "150px" }}
+              title="Editar gasto"
             >
-              ✏️
+              <FaEdit />
             </button>
             <button
               className="btn btn-danger btn-sm"
               onClick={() => handleOpenConfirmModal(row.original)}
-              style={{ width: "40px", borderRadius: "150px" }}
+              title="Eliminar gasto"
             >
-              🗑️
+              <FaTrash />
             </button>
           </div>
         ),

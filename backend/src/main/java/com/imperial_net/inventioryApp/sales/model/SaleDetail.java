@@ -4,6 +4,7 @@ import com.imperial_net.inventioryApp.products.models.Product;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -64,6 +65,6 @@ public class SaleDetail {
      * Este valor debe ser positivo, ya que no se permite un costo negativo.
      */
     @NotNull
-    @Positive
+    @PositiveOrZero
     private BigDecimal costPrice;
 }

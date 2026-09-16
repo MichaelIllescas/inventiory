@@ -80,4 +80,6 @@ public class SaleResponseDTO {
      * Este cargo es adicional al precio de venta original.
      */
     private BigDecimal extra_charge_percentage = BigDecimal.ZERO;
+
+    private String observations;
 }

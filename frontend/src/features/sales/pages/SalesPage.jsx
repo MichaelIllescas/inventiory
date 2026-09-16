@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { FaToggleOn, FaToggleOff, FaTrashAlt } from "react-icons/fa";
+import { FaToggleOn, FaToggleOff, FaTrashAlt, FaEye } from "react-icons/fa";
 import useSales from "../api/useSales";
 import DataTable from "../../../components/DataTable";
 import { LoadingScreen } from "../../../components/LoadingScreen";
@@ -56,9 +56,8 @@ const SalesPage = () => {
               className="btn btn-info btn-sm"
               onClick={() => handleDetails(row.original.id)}
               title="Ver Detalles"
-              style={{ padding: "5px" }}
             >
-              🔍
+              <FaEye />
             </button>
 
             {/* Botón para descargar PDF */}
@@ -69,9 +68,8 @@ const SalesPage = () => {
               className="btn btn-danger btn-sm px-2"
               title="Eliminar Registro"
               onClick={() => handleClickDelete(row.original)}
-              style={{ padding: "5px" }}
             >
-              🗑️
+              <FaTrashAlt />
             </button>
           </div>
         ),
